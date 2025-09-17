@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============ Tokens ============ */
+:root {
+  --brand-500: #10b981;
+  --brand-600: #059669;
+  --brand-700: #047857;
+  --bg: #f8fafc;
+  --fg: #0f172a;
+  --muted: #475569;
+  --card: #ffffff;
+  --card-2: #f1f5f9;
+  --shadow: 0 10px 25px -5px rgb(0 0 0 / 0.12), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.dark {
+  --bg: #0b1220;
+  --fg: #e2e8f0;
+  --muted: #94a3b8;
+  --card: #0f172a;
+  --card-2: #0b1426;
+  --shadow: 0 10px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+}
+
+/* ============ Base ============ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    color: var(--fg);
+    background: radial-gradient(1200px 500px at 20% -10%, rgba(16, 185, 129, 0.08), transparent 60%), radial-gradient(1000px 500px at 100% 0%, rgba(20, 184, 166, 0.06), transparent 60%), linear-gradient(to bottom, var(--bg), color-mix(in oklab, var(--bg) 70%, white 30%));
+  }
+  /* ডিফল্ট বাংলা ফন্ট: Tiro Bangla */
+  :root {
+    --font-sans: var(--font-bn), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  body,
+  button,
+  input,
+  textarea,
+  select {
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight;
+  }
+  a {
+    @apply underline decoration-transparent hover:decoration-current transition;
+    color: var(--brand-700);
+  }
+}
+
+/* ============ Components ============ */
+@layer components {
+  .container-app {
+    @apply mx-auto max-w-7xl px-4 md:px-6;
+  }
+  .section {
+    @apply py-10 md:py-14;
+  }
+
+  .container-app {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .card {
+    background: var(--card);
+    @apply rounded-2xl border border-slate-200/70 dark:border-slate-800/80 p-5;
+    box-shadow: var(--shadow);
+  }
+  .card-soft {
+    background: radial-gradient(600px 200px at -10% 0%, rgba(16, 185, 129, 0.1), transparent 60%), var(--card);
+    @apply rounded-3xl border border-slate-200/60 dark:border-slate-800/70 p-6;
+    box-shadow: var(--shadow);
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 h-11 text-[15px] font-medium transition-transform;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  .btn:active {
+    transform: translateY(0);
+  }
+  .btn-primary {
+    @apply btn text-white;
+    background: linear-gradient(135deg, var(--brand-600), var(--brand-500));
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, var(--brand-700), var(--brand-600));
+  }
+  .btn-outline {
+    @apply btn border border-slate-300/80 dark:border-slate-700/80 bg-transparent text-slate-800 dark:text-slate-200;
+  }
+  .btn-lg {
+    @apply h-12 px-5 text-[16px] rounded-2xl;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    @apply w-full rounded-xl border border-slate-300/80 dark:border-slate-700/70 bg-white/80 dark:bg-slate-900/60 px-3 h-11 text-[15px] outline-none transition;
+  }
+  .input:focus,
+  .select:focus,
+  .textarea:focus {
+    @apply ring-2 ring-emerald-300/60 dark:ring-emerald-700/50 border-emerald-400/80 dark:border-emerald-700/70;
+  }
+  .textarea {
+    @apply h-auto py-2;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-md px-2 py-1 text-xs font-medium border;
+    background: color-mix(in oklab, #ecfdf5 70%, white 30%);
+    color: var(--brand-700);
+    border-color: color-mix(in oklab, #a7f3d0 60%, white 40%);
+  }
+
+  .headline {
+    @apply font-bold;
+    background: linear-gradient(180deg, var(--fg), color-mix(in oklab, var(--fg) 70%, var(--brand-700) 30%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px -15px rgba(4, 120, 87, 0.25);
+  }
+}
+
+/* ============ Utilities ============ */
+@layer utilities 
+  .shadow-soft {
+    box-shadow: var(--shadow);
+  }
+  .divider {
+    @apply h-px w-full bg-slate-200/80 dark:bg-slate-800/70;
+  }
+  .animate-in {
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  {/* Tailwind CSS Animation Keyframes */}
+/* === Hero geometry + animations === */
+@layer utilities {
+  .clip-hex { clip-path: polygon(8% 0, 92% 0, 100% 30%, 92% 100%, 8% 100%, 0% 30%); }
+}
+@keyframes twinkle { 0%,100%{opacity:.15;transform:scale(1)} 50%{opacity:.75;transform:scale(1.25)} }
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+:root { --nav-h: 5rem; } /* navbar h-20 */
+
