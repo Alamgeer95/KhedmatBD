@@ -114,10 +114,10 @@ export default function ModernNavbar({ siteName = "KhedmatBD" }: { siteName?: st
             <div className="p-[1px] rounded-2xl bg-[linear-gradient(140deg,rgba(16,185,129,.6),rgba(8,145,178,.6))]">
               <div className="w-12 h-12 shrink-0 rounded-xl bg-slate-900/60 ring-1 ring-white/10 shadow-sm backdrop-blur grid place-items-center overflow-hidden">
     <Image
-      src="/site-logo.png"          // public/site-logo.png
+      src="/site-logo.jpg"          // public/site-logo.png
       alt="KhedmatBD logo"
-      width={28}                    // লোগোর ভেতরের সাইজ
-      height={28}
+      width={70}                    // লোগোর ভেতরের সাইজ
+      height={70}
       className="block object-contain"
       priority
       sizes="48px"
@@ -166,7 +166,7 @@ export default function ModernNavbar({ siteName = "KhedmatBD" }: { siteName?: st
                           <span className="font-semibold text-slate-100">আমাদের লক্ষ্য</span>
                           <span className="inline-flex items-center rounded-full border px-2 text-[11px] leading-5 border-emerald-400/30 text-emerald-300">Featured</span>
                         </div>
-                        <p className="mt-1 text-sm text-slate-300/90 line-clamp-2">KhedmatBD কীভাবে মাদরাসা, মসজিদ, ইসলামিক স্কুল ও এনজিওর জন্য মূল্য তৈরি করে—তার সংক্ষিপ্ত ন্যারেটিভ।</p>
+                        <p className="mt-1 text-sm text-slate-300/90 line-clamp-2">KhedmatBD কীভাবে মাদরাসা, মসজিদ, ইসলামিক স্কুল ও সংস্থার জন্য মূল্য তৈরি করে—তার সংক্ষিপ্ত ন্যারেটিভ।</p>
                       </div>
                     </Link>
 

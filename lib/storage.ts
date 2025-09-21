@@ -26,8 +26,7 @@ const s3 = new S3Client({
     S3_ACCESS_KEY_ID && S3_SECRET_ACCESS_KEY
       ? { accessKeyId: S3_ACCESS_KEY_ID, secretAccessKey: S3_SECRET_ACCESS_KEY }
       : undefined,
-  // অনেক S3-compatible endpoint এ path-style দরকার হয়
-  forcePathStyle: !!S3_ENDPOINT,
+  forcePathStyle: !!S3_ENDPOINT, // কিছু S3-compatible এ path-style দরকার হয়
 })
 
 export async function uploadBuffer(key: string, body: Buffer, contentType: string) {
@@ -51,9 +50,7 @@ export async function putJson(key: string, data: any) {
 
 export async function listPrefix(prefix: string) {
   if (!S3_BUCKET) throw new Error('S3_BUCKET missing')
-  const out = await s3.send(
-    new ListObjectsV2Command({ Bucket: S3_BUCKET, Prefix: prefix }),
-  )
+  const out = await s3.send(new ListObjectsV2Command({ Bucket: S3_BUCKET, Prefix: prefix }))
   return out.Contents || []
 }
 
@@ -71,7 +68,6 @@ export async function getSignedUrlFor(key: string, expiresInSec = 60 * 5) {
 }
 
 /** ---------- putFile (named export) ---------- */
-
 export type PutFileInput =
   | File
   | Blob
@@ -84,7 +80,7 @@ export type PutFileOptions = {
   contentType?: string
 }
 
-/** ছোট util: Blob/File ➜ Buffer */
+/** Blob/File/Buffer/ArrayBuffer/Stream ➜ Buffer */
 async function toBuffer(
   data: PutFileInput
 ): Promise<{ buf: Buffer; contentType?: string }> {
@@ -126,12 +122,7 @@ async function toBuffer(
   throw new Error('Unsupported data type for putFile')
 }
 
-/**
- * S3 তে ফাইল আপলোড
- * @param key  S3 object key (e.g. "uploads/filename.ext")
- * @param data File/Blob/Buffer/ArrayBuffer/Stream
- * @param opts contentType override
- */
+/** S3 তে ফাইল আপলোড */
 export async function putFile(
   key: string,
   data: PutFileInput,
