@@ -9,7 +9,7 @@ import logo from "components/site-logo.png";
 const SITE_NAME = "KhedmatBD";
 const SITE_URL = "https://khedmatbd.com";
 const SITE_DESC =
-  "মাদরাসা, মসজিদ, ইসলামিক স্কুল ও সংস্থার জন্য নিবেদিত বাংলাদেশের সেরা খেদমত প্ল্যাটফর্ম।";
+  "মাদরাসা, মসজিদ, ইসলামিক শিক্ষা প্রতিষ্ঠান ও সংস্থার জন্য নিবেদিত বাংলাদেশের সেরা খেদমত প্ল্যাটফর্ম।";
 
 const featuredJobs = Array.from({ length: 6 }).map((_, i) => ({
   slug: `sample-${i + 1}`,
@@ -86,7 +86,7 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold tracking-tight text-center">কিভাবে কাজ করে</h2>
           <div className="mt-10 grid md:grid-cols-3 gap-8">
             {[
-              { icon: "🔎", title: "সার্চ", desc: "ক্যাটেগরি, লোকেশন বা কীওয়ার্ড দিয়ে খেদমত খুঁজুন।" },
+              { icon: "🔎", title: "সার্চ", desc: "ক্যাটাগরি, লোকেশন বা কীওয়ার্ড দিয়ে খেদমত খুঁজুন।" },
               { icon: "✍️", title: "অ্যাপ্লাই", desc: "প্রোফাইল বানিয়ে সহজে আবেদন করুন।" },
               { icon: "🤝", title: "হায়ার", desc: "এমপ্লয়ার শর্টলিস্ট করে যোগাযোগ করবে।" },
             ].map((s, i) => (
@@ -132,13 +132,13 @@ export default function HomePage() {
 
         {/* CATEGORIES */}
         <section className="section container-app">
-          <h2 className="text-3xl font-bold tracking-tight text-center">জনপ্রিয় ক্যাটেগরি</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-center">জনপ্রিয় ক্যাটাগরি</h2>
           <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6">
             {categories.map((cat) => (
               <Link key={cat.key} href={`/jobs?cat=${cat.key}`} className="block p-6 text-center bg-white/50 dark:bg-slate-900/50 backdrop-blur-lg border border-slate-200/80 dark:border-slate-800/80 rounded-3xl shadow-lg shadow-slate-500/5 transition-all duration-300 hover:shadow-emerald-500/10 hover:border-emerald-500/50 hover:-translate-y-2 group">
                 <div className="text-4xl transition-transform duration-300 group-hover:scale-125">{cat.icon}</div>
                 <div className="mt-4 font-bold">{cat.name}</div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">ক্যাটেগরি দেখুন</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">ক্যাটাগরি দেখুন</div>
               </Link>
             ))}
           </div>
@@ -177,7 +177,7 @@ export default function HomePage() {
   {SITE_NAME}
 </Link>
               <p className="text-slate-600 dark:text-slate-400 mt-4 text-sm">
-                ইসলামিক শিক্ষা ও কমিউনিটি খেদমতের বিশ্বমানের প্ল্যাটফর্ম।
+                মাদরাসা, মসজিদ ও ইসলামিক শিক্ষা প্রতিষ্ঠানে খেদমতের বিশ্বমানের প্ল্যাটফর্ম।
               </p>
             </div>
             <div>

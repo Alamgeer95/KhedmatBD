@@ -19,11 +19,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="bn" className={tiroBangla.variable}>
-      <body>
+    <html
+      lang="bn"
+      className={`${tiroBangla.variable} h-full bg-[#fcf8e8] overscroll-y-none`}
+    >
+      <body className="min-h-screen bg-[#fcf8e8] text-[#2c3e50] antialiased">
         <Navbar />
         <Providers>{children}</Providers>
       </body>
     </html>
-  )
+  );
 }
