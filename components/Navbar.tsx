@@ -20,7 +20,9 @@ import {
   PlusCircle,
   Search
 } from "lucide-react";
-import Image from 'next/image'
+import Image from 'next/image';
+import logo from "./site-logo.png"
+
 
 // ---------- Premium NavLink (icon + active/hover styling) ----------
 function NavLink({
@@ -112,18 +114,17 @@ export default function ModernNavbar({ siteName = "KhedmatBD" }: { siteName?: st
           <Link href="/" className="inline-flex" aria-label="Home">
             {/* gradient ring logo */}
             <div className="p-[1px] rounded-2xl bg-[linear-gradient(140deg,rgba(16,185,129,.6),rgba(8,145,178,.6))]">
-              <div className="w-12 h-12 shrink-0 rounded-xl bg-slate-900/60 ring-1 ring-white/10 shadow-sm backdrop-blur grid place-items-center overflow-hidden">
+  <div className="w-12 h-12 shrink-0 rounded-xl bg-slate-900/60 ring-1 ring-white/10 shadow-sm backdrop-blur grid place-items-center overflow-hidden">
     <Image
-      src="/site-logo-2025-09-21.png"
+      src={logo}                 // ✅ এখন আর string path নয়, স্ট্যাটিক ইমপোর্ট
       alt="KhedmatBD logo"
-      width={70}                    // লোগোর ভেতরের সাইজ
-      height={70}
-      className="block object-contain"
+      width={48}                 // কন্টেইনার w-12,h-12 = 48px
+      height={48}
+      className="object-contain"
       priority
-      sizes="48px"
     />
   </div>
-            </div>
+</div>
           </Link>
           <Link
             href="/"

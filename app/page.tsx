@@ -4,6 +4,7 @@ import Image from "next/image";
 import Seo from "@/components/Seo";
 import { abs } from "@/utils/abs";
 import HeroAuroraHex from "@/components/HeroAuroraHex";
+import logo from "components/site-logo.png";
 
 const SITE_NAME = "KhedmatBD";
 const SITE_URL = "https://khedmatbd.com";
@@ -170,9 +171,11 @@ export default function HomePage() {
           <div className="container-app py-12 grid md:grid-cols-4 gap-8">
             <div className="md:col-span-1">
               <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-                <span className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-lg">🕌</span>
-                {SITE_NAME}
-              </Link>
+  <span className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center">
+    <Image src={logo} alt="KhedmatBD" width={40} height={40} className="object-contain" />
+  </span>
+  {SITE_NAME}
+</Link>
               <p className="text-slate-600 dark:text-slate-400 mt-4 text-sm">
                 ইসলামিক শিক্ষা ও কমিউনিটি খেদমতের বিশ্বমানের প্ল্যাটফর্ম।
               </p>
