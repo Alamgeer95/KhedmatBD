@@ -21,7 +21,7 @@ import {
   Search
 } from "lucide-react";
 import Image from 'next/image';
-import logo from "./site-logo.png"
+import logo from "./site-logo.png";
 
 
 // ---------- Premium NavLink (icon + active/hover styling) ----------

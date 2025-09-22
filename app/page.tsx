@@ -207,7 +207,14 @@ export default function HomePage() {
           </div>
           <div className="border-t border-slate-200 dark:border-slate-800">
               <div className="text-sm text-slate-500 text-center py-6 container-app">
-                  © {new Date().getFullYear()} {SITE_NAME}. সর্বস্বত্ব সংরক্ষিত।
+
+                    <p className="mb-3 text-lg"></p>
+
+                  <p className="text-sm mt-2">© {new Date().getFullYear()} {SITE_NAME}. কতৃক সর্বস্বত্ব সংরক্ষিত।
+                  </p>
+                  <p className="text-sm mt-2">
+                        Developed by <a href="https://wa.me/8801735260227?text=আসসালামু%20আলাইকুম%20ওয়া%20রাহমাতুল্লাহ।%20আমি%20আপনার%20সাইট%20থেকে%20যোগাযোগ%20করছি।" className="text-blue-400 hover:underline">A. Hussain</a> 
+                    </p>
               </div>
           </div>
         </footer>

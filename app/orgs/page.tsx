@@ -7,7 +7,7 @@ export default function OrgsPage() {
     <main className="min-h-screen">
       <Seo
         title="প্রতিষ্ঠানসমূহ"
-        description="মাদরাসা/মসজিদ/এনজিও প্রতিষ্ঠান তালিকা।"
+        description="মাদরাসা/মসজিদ/সংস্থার প্রতিষ্ঠান তালিকা।"
         canonical={abs('/orgs')}
         ogImage={abs('/api/og/site')}
       />

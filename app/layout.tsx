@@ -14,7 +14,7 @@ const tiroBangla = Tiro_Bangla({
 
 export const metadata: Metadata = {
   title: 'KhedmatBD',
-  description: 'মাদরাসা, মসজিদ, ইসলামিক স্কুল ও এনজিওর জন্য খেদমত প্ল্যাটফর্ম',
+  description: 'মাদরাসা, মসজিদ, ইসলামিক স্কুল ও সংস্থার জন্য খেদমত প্ল্যাটফর্ম',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
