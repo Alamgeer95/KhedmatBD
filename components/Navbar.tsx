@@ -114,7 +114,7 @@ export default function ModernNavbar({ siteName = "KhedmatBD" }: { siteName?: st
             <div className="p-[1px] rounded-2xl bg-[linear-gradient(140deg,rgba(16,185,129,.6),rgba(8,145,178,.6))]">
               <div className="w-12 h-12 shrink-0 rounded-xl bg-slate-900/60 ring-1 ring-white/10 shadow-sm backdrop-blur grid place-items-center overflow-hidden">
     <Image
-      src="/site-logo.jpg"          // public/site-logo.png
+      src="/site-logo-2025-09-21.png"
       alt="KhedmatBD logo"
       width={70}                    // লোগোর ভেতরের সাইজ
       height={70}
