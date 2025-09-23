@@ -166,55 +166,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* FOOTER */}
-        <footer className="border-t border-white/[0.1] mt-12">
-          <div className="container-app py-12 grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-1">
-              <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-                <span className="w-8 h-8 rounded-lg bg-[#b88a4e] text-white flex items-center justify-center">
-                  <Image src={logo} alt="KhedmatBD" width={40} height={40} className="object-contain" />
-                </span>
-                {SITE_NAME}
-              </Link>
-              <p className="text-[#a1b2d4] mt-4 text-sm">
-                মাদরাসা, মসজিদ ও ইসলামিক শিক্ষা প্রতিষ্ঠানে খেদমতের বিশ্বমানের প্ল্যাটফর্ম।
-              </p>
-            </div>
-            <div>
-              <div className="font-semibold text-lg">লিংকস</div>
-              <ul className="mt-4 space-y-2 text-sm">
-                <li><Link href="/jobs" className="text-[#a1b2d4] hover:text-[#b88a4e] transition-colors">খেদমতসমূহ</Link></li>
-                <li><Link href="/post-job" className="text-[#a1b2d4] hover:text-[#b88a4e] transition-colors">খেদমত পোস্ট</Link></li>
-                <li><Link href="/about" className="text-[#a1b2d4] hover:text-[#b88a4e] transition-colors">আমাদের সম্পর্কে</Link></li>
-                <li><Link href="/contact" className="text-[#a1b2d4] hover:text-[#b88a4e] transition-colors">যোগাযোগ</Link></li>
-              </ul>
-            </div>
-            <div>
-              <div className="font-semibold text-lg">লিগ্যাল</div>
-              <ul className="mt-4 space-y-2 text-sm">
-                <li><Link href="/privacy" className="text-[#a1b2d4] hover:text-[#b88a4e] transition-colors">প্রাইভেসি</Link></li>
-                <li><Link href="/terms" className="text-[#a1b2d4] hover:text-[#b88a4e] transition-colors">টার্মস</Link></li>
-              </ul>
-            </div>
-            <div>
-              <div className="font-semibold text-lg">ফলো করুন</div>
-              <div className="mt-4 flex gap-3 text-2xl">
-                <Link href="https://facebook.com" aria-label="Facebook" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.1] hover:bg-[#b88a4e]/[0.2] transition-colors">👍</Link>
-                <Link href="https://twitter.com" aria-label="Twitter" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.1] hover:bg-[#b88a4e]/[0.2] transition-colors">🐦</Link>
-                <Link href="https://linkedin.com" aria-label="LinkedIn" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.1] hover:bg-[#b88a4e]/[0.2] transition-colors">🔗</Link>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-white/[0.1]">
-              <div className="text-sm text-[#a1b2d4] text-center py-6 container-app">
-                    <p className="mb-3 text-lg"></p>
-                  <p className="text-sm mt-2">© {new Date().getFullYear()} {SITE_NAME}. কতৃক সর্বস্বত্ব সংরক্ষিত।</p>
-                  <p className="text-sm mt-2">
-                        Developed by <a href="https://wa.me/8801735260227?text=আসসালামু%20আলাইকুম%20ওয়া%20রাহমাতুল্লাহ।%20আমি%20আপনার%20সাইট%20থেকে%20যোগাযোগ%20করছি।" className="text-[#6495ED] hover:underline">A. Hussain</a> 
-                    </p>
-              </div>
-          </div>
-        </footer>
+        
       </div>
     </main>
   );
