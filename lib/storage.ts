@@ -26,7 +26,8 @@ const s3 = new S3Client({
     S3_ACCESS_KEY_ID && S3_SECRET_ACCESS_KEY
       ? { accessKeyId: S3_ACCESS_KEY_ID, secretAccessKey: S3_SECRET_ACCESS_KEY }
       : undefined,
-  forcePathStyle: !!S3_ENDPOINT, // কিছু S3-compatible এ path-style দরকার হয়
+  // অনেক S3-compatible (R2/MinIO) এ path-style দরকার হয়
+  forcePathStyle: !!S3_ENDPOINT,
 })
 
 export async function uploadBuffer(key: string, body: Buffer, contentType: string) {
@@ -37,6 +38,10 @@ export async function uploadBuffer(key: string, body: Buffer, contentType: strin
       Key: key,
       Body: body,
       ContentType: contentType,
+<<<<<<< HEAD
+=======
+      
+>>>>>>> f2f0c39 (feat: multiple page updates)
       
     }),
   )
@@ -67,7 +72,7 @@ export async function getSignedUrlFor(key: string, expiresInSec = 60 * 5) {
   return getSignedUrl(s3, cmd, { expiresIn: expiresInSec })
 }
 
-/** ---------- putFile (named export) ---------- */
+// ---------- putFile ----------
 export type PutFileInput =
   | File
   | Blob
@@ -84,7 +89,7 @@ export type PutFileOptions = {
 async function toBuffer(
   data: PutFileInput
 ): Promise<{ buf: Buffer; contentType?: string }> {
-  // 1) Browser: File/Blob
+  // Browser: File/Blob
   if (typeof Blob !== 'undefined' && data instanceof Blob) {
     const arrayBuffer = await data.arrayBuffer()
     const t = (data as Blob).type
@@ -92,17 +97,17 @@ async function toBuffer(
     return { buf: Buffer.from(arrayBuffer), contentType }
   }
 
-  // 2) Node Buffer
+  // Node Buffer
   if (typeof Buffer !== 'undefined' && Buffer.isBuffer(data)) {
     return { buf: data }
   }
 
-  // 3) ArrayBuffer
+  // ArrayBuffer
   if (data instanceof ArrayBuffer) {
     return { buf: Buffer.from(data) }
   }
 
-  // 4) Node Readable stream
+  // Node Readable stream
   if (typeof (data as any)?.pipe === 'function') {
     const stream = data as NodeJS.ReadableStream
     const chunks: Buffer[] = []
