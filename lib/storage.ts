@@ -26,23 +26,21 @@ const s3 = new S3Client({
     S3_ACCESS_KEY_ID && S3_SECRET_ACCESS_KEY
       ? { accessKeyId: S3_ACCESS_KEY_ID, secretAccessKey: S3_SECRET_ACCESS_KEY }
       : undefined,
-  // অনেক S3-compatible (R2/MinIO) এ path-style দরকার হয়
+  // R2/MinIO টাইপ এন্ডপয়েন্ট হলে path-style কাজে লাগে
   forcePathStyle: !!S3_ENDPOINT,
 })
 
 export async function uploadBuffer(key: string, body: Buffer, contentType: string) {
   if (!S3_BUCKET) throw new Error('S3_BUCKET missing')
+
   await s3.send(
     new PutObjectCommand({
       Bucket: S3_BUCKET,
       Key: key,
       Body: body,
       ContentType: contentType,
-<<<<<<< HEAD
-=======
-      
->>>>>>> f2f0c39 (feat: multiple page updates)
-      
+      // ACL চাইলে এখানে 'private' / 'public-read' ইত্যাদি দিন, না হলে ডিফল্ট থাকবে
+      // ACL: 'private',
     }),
   )
   return { key }
@@ -55,7 +53,9 @@ export async function putJson(key: string, data: any) {
 
 export async function listPrefix(prefix: string) {
   if (!S3_BUCKET) throw new Error('S3_BUCKET missing')
-  const out = await s3.send(new ListObjectsV2Command({ Bucket: S3_BUCKET, Prefix: prefix }))
+  const out = await s3.send(
+    new ListObjectsV2Command({ Bucket: S3_BUCKET, Prefix: prefix }),
+  )
   return out.Contents || []
 }
 
@@ -72,7 +72,7 @@ export async function getSignedUrlFor(key: string, expiresInSec = 60 * 5) {
   return getSignedUrl(s3, cmd, { expiresIn: expiresInSec })
 }
 
-// ---------- putFile ----------
+/** ---------- putFile (named export) ---------- */
 export type PutFileInput =
   | File
   | Blob
@@ -89,7 +89,7 @@ export type PutFileOptions = {
 async function toBuffer(
   data: PutFileInput
 ): Promise<{ buf: Buffer; contentType?: string }> {
-  // Browser: File/Blob
+  // 1) Browser: File/Blob
   if (typeof Blob !== 'undefined' && data instanceof Blob) {
     const arrayBuffer = await data.arrayBuffer()
     const t = (data as Blob).type
@@ -97,17 +97,17 @@ async function toBuffer(
     return { buf: Buffer.from(arrayBuffer), contentType }
   }
 
-  // Node Buffer
+  // 2) Node Buffer
   if (typeof Buffer !== 'undefined' && Buffer.isBuffer(data)) {
     return { buf: data }
   }
 
-  // ArrayBuffer
+  // 3) ArrayBuffer
   if (data instanceof ArrayBuffer) {
     return { buf: Buffer.from(data) }
   }
 
-  // Node Readable stream
+  // 4) Node Readable stream
   if (typeof (data as any)?.pipe === 'function') {
     const stream = data as NodeJS.ReadableStream
     const chunks: Buffer[] = []
