@@ -37,7 +37,7 @@ export async function uploadBuffer(key: string, body: Buffer, contentType: strin
       Key: key,
       Body: body,
       ContentType: contentType,
-      ACL: 'private',
+      
     }),
   )
   return { key }
