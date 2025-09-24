@@ -9,7 +9,7 @@ import logo from "components/site-logo.png";
 const SITE_NAME = "KhedmatBD";
 const SITE_URL = "https://khedmatbd.com";
 const SITE_DESC =
-  "মাদরাসা, মসজিদ, ইসলামিক স্কুল ও সংস্থার জন্য নিবেদিত বাংলাদেশের সেরা খেদমত প্ল্যাটফর্ম।";
+  "“মাদরাসা, মসজিদ ও ইসলামিক প্রতিষ্ঠানের ইমানদীপ্ত যাত্রায়—আমরা সেই নিবেদিত প্ল্যাটফর্ম, যা যোগ্য ও নিষ্ঠাবানদের বাঁধে আস্থার বন্ধনে।”";
 
 const featuredJobs = Array.from({ length: 6 }).map((_, i) => ({
   slug: `sample-${i + 1}`,
@@ -18,6 +18,15 @@ const featuredJobs = Array.from({ length: 6 }).map((_, i) => ({
   location: ["ঢাকা", "চট্টগ্রাম", "সিলেট", "মক্কা", "মাদিনা", "জেদ্দা"][i % 6],
   logo: "/placeholders/org-logo.png",
 }));
+
+const recentJobs = Array.from({ length: 6 }).map((_, i) => ({
+  slug: `recent-${i + 1}`,
+  title: ["কুরআন শিক্ষক", "আরবি শিক্ষক", "হাফেজ", "মুয়াজ্জিন", "খাদেম", "অফিস সহকারী"][i % 6],
+  org: ["আল-হেরা ইসলামিক সেন্টার", "নুরুল কুরআন ফাউন্ডেশন", "বায়তুল আমান মসজিদ", "আল-ফুরকান মাদরাসা", "আল-ফালাহ ইনস্টিটিউট", "আন-নূর মাদরাসা"][i % 6],
+  location: ["রাজশাহী", "খুলনা", "রংপুর", "ঢাকা", "সিলেট", "চট্টগ্রাম"][i % 6],
+  logo: "/placeholders/org-logo.png",
+}));
+
 
 const categories = [
   { key: "arabic", name: "আরবি শিক্ষক", icon: "🗣️" },
@@ -61,10 +70,30 @@ export default function HomePage() {
     ],
   };
 
+  const IslamicPatternOverlay = () => (
+    <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+      <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <pattern id="islamicPattern" patternUnits="userSpaceOnUse" width="10" height="10">
+            {/* A more intricate pattern for greater visual interest */}
+            <path
+              d="M 5 0 L 10 5 L 5 10 L 0 5 Z M 0 0 L 5 5 M 5 5 L 10 0 M 5 5 L 5 10"
+              fill="none"
+              stroke="#c29660"
+              strokeWidth="0.8"
+            />
+          </pattern>
+        </defs>
+        <rect width="100" height="100" fill="url(#islamicPattern)" />
+      </svg>
+    </div>
+  );
+
+
   return (
-    <main className="min-h-screen bg-[#0e1a30] text-[#f0f5ff] overflow-hidden">
+    <main className="min-h-screen bg-[#0e1a30] text-[#f0f5ff] overflow-visible">
       {/* Background Geometric Shapes */}
-      <div className="absolute top-0 left-0 w-full h-full z-0 overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-full z-0 overflow-visible">
         <div className="absolute top-[-20rem] left-[-20rem] w-[50rem] h-[50rem] bg-[#b88a4e]/5 rounded-full filter blur-3xl"></div>
         <div className="absolute bottom-[-25rem] right-[-15rem] w-[45rem] h-[45rem] bg-[#4e8a8a]/5 rounded-full filter blur-3xl"></div>
       </div>
@@ -81,35 +110,20 @@ export default function HomePage() {
  
       <HeroAuroraHex siteDesc={SITE_DESC} />
 
-        {/* HOW IT WORKS */}
-        <section className="section container-app">
-          <h2 className="text-3xl font-bold tracking-tight text-center">কিভাবে কাজ করে</h2>
-          <div className="mt-10 grid md:grid-cols-3 gap-8">
-            {[
-              { icon: "🔎", title: "সার্চ", desc: "ক্যাটাগরি, লোকেশন বা কীওয়ার্ড দিয়ে খেদমত খুঁজুন।" },
-              { icon: "✍️", title: "অ্যাপ্লাই", desc: "প্রোফাইল বানিয়ে সহজে আবেদন করুন।" },
-              { icon: "🤝", title: "হায়ার", desc: "এমপ্লয়ার শর্টলিস্ট করে যোগাযোগ করবে।" },
-            ].map((s, i) => (
-              <div key={i} className="text-center p-8 bg-white/[0.05] backdrop-blur-lg border border-white/[0.1] rounded-3xl shadow-lg shadow-white/[0.05]">
-                <div className="text-5xl inline-block bg-[#b88a4e]/[0.1] p-4 rounded-full">{s.icon}</div>
-                <h3 className="mt-6 text-xl font-bold">{s.title}</h3>
-                <p className="text-[#a1b2d4] mt-2">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+      {/* RECENT JOBS */}
+      <section className="section container-app">
+  <div className="mb-8 text-center">
+    <h2 className="text-3xl font-bold tracking-tight">সাম্প্রতিক বিজ্ঞপ্তিসমূহ</h2>
+  </div>
+  
 
-        {/* FEATURED JOBS */}
-        <section className="section container-app">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold tracking-tight">ফিচার্ড খেদমতসমূহ</h2>
-            <Link href="/jobs" className="btn btn-sm btn-outline rounded-full border-[#b88a4e]/50 text-[#f0f5ff] hover:bg-[#b88a4e]/10 hover:border-[#b88a4e] transition-colors">সব দেখুন</Link>
-          </div>
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredJobs.map((j) => (
-              <article key={j.slug} className="p-6 bg-white/[0.05] backdrop-blur-lg border border-white/[0.1] rounded-3xl shadow-lg shadow-white/[0.05] transition-all duration-300 hover:shadow-[#b88a4e]/10 hover:border-[#b88a4e]/50 hover:-translate-y-2 group">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 flex-shrink-0 bg-[#0e1a30] rounded-xl p-1 shadow-md">
+            {recentJobs.map((j) => (
+              <article key={j.slug} className="relative p-6 bg-[#1e2d4d] backdrop-blur-lg border border-[#b88a4e]/20 rounded-3xl shadow-lg shadow-white/[0.05] transition-all duration-300 hover:shadow-[#b88a4e]/10 hover:border-[#b88a4e]/50 hover:-translate-y-2 group overflow-hidden">
+                <IslamicPatternOverlay />
+                <div className="relative z-10 flex items-center gap-4">
+                  <div className="w-12 h-12 flex-shrink-0 bg-[#0e1a30] rounded-xl p-1 shadow-md border border-[#b88a4e]/20">
                     <Image src={j.logo} alt={j.org} width={40} height={40} className="rounded-lg" />
                   </div>
                   <div>
@@ -119,7 +133,62 @@ export default function HomePage() {
                     </p>
                   </div>
                 </div>
-                <div className="mt-5 flex items-center justify-between">
+                <div className="relative z-10 mt-5 flex items-center justify-between">
+                  <Link href={`/jobs/${j.slug}`} className="text-sm font-semibold text-[#b88a4e] opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-300">
+                    বিস্তারিত দেখুন →
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* HOW IT WORKS */}
+        <section className="section container-app">
+          <h2 className="text-3xl font-bold tracking-tight text-center">কিভাবে কাজ করে</h2>
+          <div className="mt-10 grid md:grid-cols-3 gap-8">
+            {[
+              { icon: "🔎", title: "সার্চ", desc: "ক্যাটাগরি, লোকেশন বা কীওয়ার্ড দিয়ে খেদমত খুঁজুন।" },
+              { icon: "✍️", title: "অ্যাপ্লাই", desc: "প্রোফাইল বানিয়ে সহজে আবেদন করুন।" },
+              { icon: "🤝", title: "হায়ার", desc: "এমপ্লয়ার শর্টলিস্ট করে যোগাযোগ করবে।" },
+            ].map((s, i) => (
+              <div key={i} className="relative text-center p-8 bg-[#1e2d4d] backdrop-blur-lg border border-[#b88a4e]/20 rounded-3xl shadow-lg shadow-white/[0.05] overflow-hidden group">
+                 <IslamicPatternOverlay />
+                <div className="relative z-10">
+                  <div className="text-5xl inline-block bg-[#b88a4e]/[0.1] p-4 rounded-full transition-all duration-300 group-hover:bg-[#b88a4e]/[0.3] group-hover:scale-110">{s.icon}</div>
+                  <h3 className="mt-6 text-xl font-bold">{s.title}</h3>
+                  <p className="text-[#a1b2d4] mt-2">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FEATURED JOBS */}
+        <section className="section container-app">
+  <div className="mb-8 relative">
+    <h2 className="text-3xl font-bold tracking-tight text-center">
+      ফিচার্ড খেদমতসমূহ
+    </h2>
+  </div>
+
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredJobs.map((j) => (
+              <article key={j.slug} className="relative p-6 bg-[#1e2d4d] backdrop-blur-lg border border-[#b88a4e]/20 rounded-3xl shadow-lg shadow-white/[0.05] transition-all duration-300 hover:shadow-[#b88a4e]/10 hover:border-[#b88a4e]/50 hover:-translate-y-2 group overflow-hidden">
+                <IslamicPatternOverlay />
+                <div className="relative z-10 flex items-center gap-4">
+                  <div className="w-12 h-12 flex-shrink-0 bg-[#0e1a30] rounded-xl p-1 shadow-md border border-[#b88a4e]/20">
+                    <Image src={j.logo} alt={j.org} width={40} height={40} className="rounded-lg" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg leading-tight group-hover:text-[#b88a4e] transition-colors">{j.title}</h3>
+                    <p className="text-sm text-[#a1b2d4] mt-1">
+                      {j.org} • {j.location}
+                    </p>
+                  </div>
+                </div>
+                <div className="relative z-10 mt-5 flex items-center justify-between">
                   <span className="badge badge-outline border-[#4e8a8a]/50 text-[#4e8a8a] bg-[#4e8a8a]/10">💎ফিচার্ড</span>
                   <Link href={`/jobs/${j.slug}`} className="text-sm font-semibold text-[#b88a4e] opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-300">
                     বিস্তারিত দেখুন →
@@ -135,10 +204,13 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold tracking-tight text-center">জনপ্রিয় ক্যাটাগরি</h2>
           <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6">
             {categories.map((cat) => (
-              <Link key={cat.key} href={`/jobs?cat=${cat.key}`} className="block p-6 text-center bg-white/[0.05] backdrop-blur-lg border border-white/[0.1] rounded-3xl shadow-lg shadow-white/[0.05] transition-all duration-300 hover:shadow-[#b88a4e]/10 hover:border-[#b88a4e]/50 hover:-translate-y-2 group">
-                <div className="text-4xl transition-transform duration-300 group-hover:scale-125">{cat.icon}</div>
-                <div className="mt-4 font-bold">{cat.name}</div>
-                <div className="text-sm text-[#a1b2d4]">ক্যাটাগরি দেখুন</div>
+              <Link key={cat.key} href={`/jobs?cat=${cat.key}`} className="relative block p-6 text-center bg-[#1e2d4d] backdrop-blur-lg border border-[#b88a4e]/20 rounded-3xl shadow-lg shadow-white/[0.05] transition-all duration-300 hover:shadow-[#b88a4e]/10 hover:border-[#b88a4e]/50 hover:-translate-y-2 group overflow-hidden">
+                <IslamicPatternOverlay />
+                <div className="relative z-10">
+                  <div className="text-4xl transition-transform duration-300 group-hover:scale-125">{cat.icon}</div>
+                  <div className="mt-4 font-bold">{cat.name}</div>
+                  <div className="text-sm text-[#a1b2d4]">ক্যাটাগরি দেখুন</div>
+                </div>
               </Link>
             ))}
           </div>

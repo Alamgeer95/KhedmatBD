@@ -74,10 +74,10 @@ export default function JobsListingPage() {
             {jobs.map((j) => (
               <article
                 key={j.slug}
-                className="p-6 bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl shadow-lg shadow-black/20 hover:shadow-[#b88a4e]/20 hover:border-[#b88a4e]/50 transition-all duration-300 hover:-translate-y-2 group"
+                className="p-6 bg-[#1e2d4d] border border-[#b88a4e]/20 rounded-3xl shadow-lg shadow-white/[0.05] transition-all duration-300 hover:shadow-[#b88a4e]/10 hover:border-[#b88a4e]/50 hover:-translate-y-2 group"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 flex-shrink-0 bg-[#0e1a30] rounded-xl p-1 shadow-md">
+                  <div className="w-12 h-12 flex-shrink-0 bg-[#0e1a30] rounded-xl p-1 shadow-md border border-[#b88a4e]/20">
                     <Image
                       src={j.logo}
                       alt={j.org}

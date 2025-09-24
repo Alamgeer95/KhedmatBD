@@ -256,7 +256,7 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
 
   return (
     <header
-  className={`relative sticky top-0 z-50 w-full transition-[transform,background,border,box-shadow] duration-300
+  className={`relative sticky top-0 z-50 w-full transition-[transform,background,border,box-shadow] duration-300 
     before:content-[''] before:absolute before:-top-10 before:left-0 before:right-0 before:h-10
     before:bg-gradient-to-b before:from-[#2e1a3b] before:to-transparent
     ${scrolled
@@ -302,7 +302,7 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
         {/* Right: Nav + CTAs */}
         <div className="flex items-center gap-3 relative">
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-2 text-lg font-['Tiro_Bangla'] relative">
+          <div className="hidden md:flex items-center gap-2 text-2xl font-extrabold font-['Tiro_Bangla'] relative">
             <NavLink href="/jobs" icon={Briefcase}>
               খেদমতসমূহ
             </NavLink>

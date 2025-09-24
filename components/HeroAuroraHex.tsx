@@ -157,7 +157,7 @@ export default function HeroAuroraHex({ siteDesc }: { siteDesc: string }) {
   return (
     <section
       className="relative container-app px-4 sm:px-6 lg:px-8
-                 pt-[calc(var(--nav-h)+0.75rem)] pb-10 text-center"
+                 pt-[calc(var(--nav-h)+1.5rem)] pb-10 text-center min-h-[200px]"
     >
       {/* Gradient border wrapper (rounded rectangle) */}
       <div
@@ -167,7 +167,7 @@ export default function HeroAuroraHex({ siteDesc }: { siteDesc: string }) {
       >
         {/* Inner glass card */}
         <div
-          className="relative rounded-[calc(2rem-2px)] overflow-hidden
+          className="relative rounded-[calc(2rem-2px)] overflow-visible
                      bg-white/80 dark:bg-slate-900/70 backdrop-blur-xl
                      px-6 py-12 md:px-14 md:py-16"
         >
@@ -201,12 +201,12 @@ export default function HeroAuroraHex({ siteDesc }: { siteDesc: string }) {
             </div>
 
             <h1
-              className="mt-4 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight
+              className="mt-4 text-4xl sm:text-5xl md:text-6xl pt-3 font-extrabold tracking-tight leading-[1]
                          bg-clip-text text-transparent bg-gradient-to-br
                          from-slate-800 to-slate-600 dark:from-white dark:to-slate-300"
             >
-              যোগ্যতা ও দক্ষতা অনুযায়ী খুঁজে নিন আপনার স্বপ্নের খেদমত।
-              <br className="hidden md:block" /> আপনার প্রতিষ্ঠানের জন্য যোগ্য ব্যাক্তি খুঁজুন।
+              যোগ্যতা ও দক্ষতার আলোকে পূর্ণ হোক আপনার স্বপ্নের কাঙ্ক্ষিত খেদমত।
+              <br className="hidden md:block" /> আপনার প্রতিষ্ঠানের পবিত্র দায়িত্বে বেছে নিন সৎ, আমানতদার ও নিবেদিতপ্রাণ যোগ্য ব্যক্তিত্ব।
             </h1>
 
             <p className="mt-6 text-lg md:text-xl text-slate-700 dark:text-slate-300 max-w-3xl">

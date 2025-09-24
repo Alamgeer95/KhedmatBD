@@ -51,7 +51,7 @@
   h4,
   h5,
   h6 {
-    @apply font-bold tracking-tight;
+    @apply font-bold tracking-tight leading-relaxed;
   }
   a {
     @apply underline decoration-transparent hover:decoration-current transition;
@@ -172,5 +172,5 @@
 }
 @keyframes twinkle { 0%,100%{opacity:.15;transform:scale(1)} 50%{opacity:.75;transform:scale(1.25)} }
 @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-:root { --nav-h: 5rem; } /* navbar h-20 */
+:root { --nav-h: 6rem; } /* navbar h-20 */
 
