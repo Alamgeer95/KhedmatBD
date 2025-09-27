@@ -57,7 +57,7 @@ export async function putFile(
       Key: key,
       Body: toBuffer(body),
       ContentType: opts.contentType,
-      // R2-এ ACL ব্যবহার করবেন না
+      // ⚠️ R2-এ ACL ব্যবহার করবেন না
     })
   )
   return { url: `s3://${Bucket}/${key}`, etag: (res as any)?.ETag }
@@ -83,7 +83,7 @@ export async function getJson<T = any>(key: string): Promise<T> {
   return JSON.parse(body.toString('utf8')) as T
 }
 
-/** অ্যালিয়াস: getObjectText */
+/** রুটে টেক্সট পড়ার সুবিধাজনক অ্যালিয়াস */
 export async function getObjectText(key: string, encoding: BufferEncoding = 'utf8') {
   const { body } = await getObject(key)
   return body.toString(encoding)
@@ -108,8 +108,7 @@ export async function listObjects(prefix: string): Promise<string[]> {
   return keys
 }
 export const list = listObjects
-/** অ্যালিয়াস: listPrefix */
-export const listPrefix = listObjects
+export const listPrefix = listObjects // ← আপনার রাউটগুলো এটাই ইমপোর্ট করছে
 
 /* ---------- SIGNED URL ---------- */
 export async function getSignedReadUrl(key: string, expiresInSeconds = 600) {
@@ -118,5 +117,4 @@ export async function getSignedReadUrl(key: string, expiresInSeconds = 600) {
   return _getSignedUrl(s3, cmd, { expiresIn: expiresInSeconds })
 }
 export const getSignedUrl = getSignedReadUrl
-/** অ্যালিয়াস: getSignedUrlFor */
-export const getSignedUrlFor = getSignedReadUrl
+export const getSignedUrlFor = getSignedReadUrl // ← আপনার রাউটগুলো এটাই ইমপোর্ট করছে

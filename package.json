@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "prepare": "is-ci || husky install"
+    "prepare": "is-ci || husky install",
+    "test": "echo no tests"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.896.0",
