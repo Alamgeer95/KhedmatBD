@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 export default function LoginClient() {
   const router = useRouter()
   const sp = useSearchParams()
-  const next = sp.get('next') || '/dashboard/applications' // বৈধ রাউট চেক
+  const next = sp.get('next') || '/dashboard/applications' // ডিফল্ট রাউট
 
   const [password, setPassword] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -26,7 +26,8 @@ export default function LoginClient() {
         const t = await res.json().catch(() => ({}))
         throw new Error(t?.error || 'লগইন ব্যর্থ')
       }
-      router.replace(next as string)
+      // next কে Route হিসেবে নিশ্চিত করতে টাইপ কাস্টিং
+      router.replace(next as any) // temporary fix, see solution 2 for better approach
       router.refresh()
     } catch (e: any) {
       setErr(e.message || 'লগইন ব্যর্থ')
@@ -36,8 +37,8 @@ export default function LoginClient() {
   }
 
   async function handleLogout() {
-    await fetch('/api/admin/logout', { method: 'POST' }); // API কল
-    router.refresh(); // পেজ রিফ্রেশ
+    await fetch('/api/admin/logout', { method: 'POST' });
+    router.refresh();
   }
 
   return (
