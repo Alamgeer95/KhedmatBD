@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 export default function LoginClient() {
   const router = useRouter()
   const sp = useSearchParams()
-  const next = sp.get('next') || '/dashboard/applications'
+  const next = sp.get('next') || '/dashboard/applications' // বৈধ রাউট চেক
 
   const [password, setPassword] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -26,13 +26,18 @@ export default function LoginClient() {
         const t = await res.json().catch(() => ({}))
         throw new Error(t?.error || 'লগইন ব্যর্থ')
       }
-      router.replace(next)
+      router.replace(next as string)
       router.refresh()
     } catch (e: any) {
       setErr(e.message || 'লগইন ব্যর্থ')
     } finally {
       setSubmitting(false)
     }
+  }
+
+  async function handleLogout() {
+    await fetch('/api/admin/logout', { method: 'POST' }); // API কল
+    router.refresh(); // পেজ রিফ্রেশ
   }
 
   return (
@@ -61,7 +66,7 @@ export default function LoginClient() {
           {submitting ? 'লগইন হচ্ছে…' : 'লগইন'}
         </button>
 
-        <a href="/api/admin/logout" className="mt-3 inline-block text-sm text-slate-600 hover:underline">
+        <a href="#" onClick={(e) => { e.preventDefault(); handleLogout(); }} className="mt-3 inline-block text-sm text-slate-600 hover:underline">
           লগআউট (কুকি ক্লিয়ার)
         </a>
       </form>
