@@ -44,8 +44,7 @@ export async function POST(req: Request) {
       : 'docx';
 
     const resumeKey = `resumes/${jobSlug}/${id}.${ext}`;
-    await putFile(resumeKey, buffer, resume.type);
-
+    await putFile(resumeKey, buffer, { contentType: resume.type });
     // Save submission JSON
     const submission = {
       id,
