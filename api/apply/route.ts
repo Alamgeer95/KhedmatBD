@@ -1,6 +1,6 @@
 // app/api/apply/route.ts
 import { NextResponse } from 'next/server';
-import { uploadBuffer, putJson } from '@/lib/storage';
+import { putFile, putJson } from '@/lib/storage';
 import { sendMail } from '@/lib/email';
 
 const MAX_BYTES = 5 * 1024 * 1024; // 5MB
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
       : 'docx';
 
     const resumeKey = `resumes/${jobSlug}/${id}.${ext}`;
-    await uploadBuffer(resumeKey, buffer, resume.type);
+    await putFile(resumeKey, buffer, resume.type);
 
     // Save submission JSON
     const submission = {

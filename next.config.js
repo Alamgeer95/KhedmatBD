@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typedRoutes: true,
   reactStrictMode: true,
   images: { unoptimized: true },
-  // experimental.typedRoutes থেকে সরিয়ে
-  typedRoutes: true,
 }
 export default nextConfig

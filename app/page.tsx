@@ -40,7 +40,7 @@ const categories = [
 ];
 
 export default function HomePage() {
-  const title = `মাদরাসা চাকরি খুঁজুন ও পোস্ট করুন — ${SITE_NAME}`;
+  const title = `মাদরাসা খেদমত খুঁজুন ও পোস্ট করুন — ${SITE_NAME}`;
   const ogImage = `${SITE_URL}/og/home.jpg`;
 
   const websiteJsonLd = {
