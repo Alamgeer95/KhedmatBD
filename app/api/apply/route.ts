@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { randomUUID } from 'crypto'
-import { putJson, putFile } from '@/lib/storage'
+import { putFile as putJson } from '@/lib/storage';
 import { sendMail } from '@/lib/email'
 import { rateLimit } from '@/lib/ratelimit'
 
