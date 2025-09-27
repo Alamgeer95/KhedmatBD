@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: { unoptimized: true },
-  experimental: { typedRoutes: false },
-};
-export default nextConfig;
+  // experimental.typedRoutes থেকে সরিয়ে
+  typedRoutes: true,
+}
+export default nextConfig
