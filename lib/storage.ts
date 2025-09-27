@@ -1,7 +1,16 @@
 // lib/storage.ts
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+  ListObjectsV2Command,
+  _Object,
+} from '@aws-sdk/client-s3'
+import { getSignedUrl as _getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { Readable } from 'stream'
 
 type PutOptions = { contentType?: string }
+type GetResult = { body: Buffer; contentType?: string | undefined }
 
 function toBuffer(input: Buffer | Uint8Array | ArrayBuffer) {
   if (input instanceof Buffer) return input
@@ -9,12 +18,20 @@ function toBuffer(input: Buffer | Uint8Array | ArrayBuffer) {
   return Buffer.from(input as ArrayBuffer)
 }
 
+function streamToBuffer(stream: any): Promise<Buffer> {
+  // Node runtime only (we use runtime='nodejs')
+  return new Promise((resolve, reject) => {
+    const chunks: any[] = []
+    ;(stream as Readable)
+      .on('data', (c) => chunks.push(c))
+      .on('end', () => resolve(Buffer.concat(chunks)))
+      .on('error', reject)
+  })
+}
+
 const s3 = new S3Client({
-  // R2-এর জন্য region 'auto' রাখুন
-  region: process.env.S3_REGION || 'auto',
-  // উদাহরণ: https://<ACCOUNT_ID>.r2.cloudflarestorage.com
-  endpoint: process.env.S3_ENDPOINT || undefined,
-  // R2-তে সাধারণত path-style দরকার হয় না; তবু env দিয়ে কন্ট্রোল রাখলাম
+  region: process.env.S3_REGION || 'auto', // R2 → 'auto'
+  endpoint: process.env.S3_ENDPOINT || undefined, // e.g. https://<ACCOUNT_ID>.r2.cloudflarestorage.com
   forcePathStyle: (process.env.S3_FORCE_PATH_STYLE || 'false') === 'true',
   credentials: {
     accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
@@ -22,22 +39,28 @@ const s3 = new S3Client({
   },
 })
 
+function requireBucket(): string {
+  const b = process.env.S3_BUCKET
+  if (!b) throw new Error('Missing S3_BUCKET')
+  return b
+}
+
+/** --------- WRITE ---------- */
 export async function putFile(
   key: string,
   body: Buffer | Uint8Array | ArrayBuffer,
   opts: PutOptions = {}
 ) {
-  const Bucket = process.env.S3_BUCKET
-  if (!Bucket) throw new Error('Missing S3_BUCKET')
-
-  // ⚠️ R2-তে ACL ব্যবহার করবেন না
-  const res = await s3.send(new PutObjectCommand({
-    Bucket,
-    Key: key,
-    Body: toBuffer(body),
-    ContentType: opts.contentType,
-  }))
-
+  const Bucket = requireBucket()
+  const res = await s3.send(
+    new PutObjectCommand({
+      Bucket,
+      Key: key,
+      Body: toBuffer(body),
+      ContentType: opts.contentType,
+      // ⚠️ R2-তে ACL দেবেন না
+    })
+  )
   return { url: `s3://${Bucket}/${key}`, etag: (res as any)?.ETag }
 }
 
@@ -45,3 +68,52 @@ export async function putJson(key: string, data: unknown) {
   const buf = Buffer.from(JSON.stringify(data))
   return putFile(key, buf, { contentType: 'application/json' })
 }
+
+/** --------- READ ---------- */
+export async function getObject(key: string): Promise<GetResult> {
+  const Bucket = requireBucket()
+  const res = await s3.send(new GetObjectCommand({ Bucket, Key: key }))
+  const body = await streamToBuffer(res.Body as any)
+  const contentType = res.ContentType
+  return { body, contentType }
+}
+
+// convenience alias often used in routes
+export const getFile = getObject
+
+export async function getJson<T = any>(key: string): Promise<T> {
+  const { body } = await getObject(key)
+  return JSON.parse(body.toString('utf8')) as T
+}
+
+/** --------- LIST ---------- */
+export async function listObjects(prefix: string): Promise<string[]> {
+  const Bucket = requireBucket()
+  let ContinuationToken: string | undefined
+  const keys: string[] = []
+
+  do {
+    const res = await s3.send(
+      new ListObjectsV2Command({ Bucket, Prefix: prefix, ContinuationToken })
+    )
+    ;(res.Contents as _Object[] | undefined)?.forEach((o) => {
+      if (o.Key) keys.push(o.Key)
+    })
+    ContinuationToken = res.IsTruncated ? res.NextContinuationToken : undefined
+  } while (ContinuationToken)
+
+  return keys
+}
+
+// a shorter alias some codebases prefer
+export const list = listObjects
+
+/** --------- SIGNED URL ---------- */
+export async function getSignedReadUrl(key: string, expiresInSeconds = 600) {
+  const Bucket = requireBucket()
+  const cmd = new GetObjectCommand({ Bucket, Key: key })
+  return _getSignedUrl(s3, cmd, { expiresIn: expiresInSeconds })
+}
+
+// compatibility name used by some routes
+export const getSignedUrl = getSignedReadUrl
