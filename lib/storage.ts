@@ -19,7 +19,6 @@ function toBuffer(input: Buffer | Uint8Array | ArrayBuffer) {
 }
 
 function streamToBuffer(stream: any): Promise<Buffer> {
-  // Node runtime only (we use runtime='nodejs')
   return new Promise((resolve, reject) => {
     const chunks: any[] = []
     ;(stream as Readable)
@@ -31,7 +30,7 @@ function streamToBuffer(stream: any): Promise<Buffer> {
 
 const s3 = new S3Client({
   region: process.env.S3_REGION || 'auto', // R2 → 'auto'
-  endpoint: process.env.S3_ENDPOINT || undefined, // e.g. https://<ACCOUNT_ID>.r2.cloudflarestorage.com
+  endpoint: process.env.S3_ENDPOINT || undefined, // https://<ACCOUNT_ID>.r2.cloudflarestorage.com
   forcePathStyle: (process.env.S3_FORCE_PATH_STYLE || 'false') === 'true',
   credentials: {
     accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
@@ -45,7 +44,7 @@ function requireBucket(): string {
   return b
 }
 
-/** --------- WRITE ---------- */
+/* ---------- WRITE ---------- */
 export async function putFile(
   key: string,
   body: Buffer | Uint8Array | ArrayBuffer,
@@ -58,7 +57,7 @@ export async function putFile(
       Key: key,
       Body: toBuffer(body),
       ContentType: opts.contentType,
-      // ⚠️ R2-তে ACL দেবেন না
+      // R2-এ ACL ব্যবহার করবেন না
     })
   )
   return { url: `s3://${Bucket}/${key}`, etag: (res as any)?.ETag }
@@ -69,7 +68,7 @@ export async function putJson(key: string, data: unknown) {
   return putFile(key, buf, { contentType: 'application/json' })
 }
 
-/** --------- READ ---------- */
+/* ---------- READ ---------- */
 export async function getObject(key: string): Promise<GetResult> {
   const Bucket = requireBucket()
   const res = await s3.send(new GetObjectCommand({ Bucket, Key: key }))
@@ -77,8 +76,6 @@ export async function getObject(key: string): Promise<GetResult> {
   const contentType = res.ContentType
   return { body, contentType }
 }
-
-// convenience alias often used in routes
 export const getFile = getObject
 
 export async function getJson<T = any>(key: string): Promise<T> {
@@ -86,7 +83,13 @@ export async function getJson<T = any>(key: string): Promise<T> {
   return JSON.parse(body.toString('utf8')) as T
 }
 
-/** --------- LIST ---------- */
+/** অ্যালিয়াস: getObjectText */
+export async function getObjectText(key: string, encoding: BufferEncoding = 'utf8') {
+  const { body } = await getObject(key)
+  return body.toString(encoding)
+}
+
+/* ---------- LIST ---------- */
 export async function listObjects(prefix: string): Promise<string[]> {
   const Bucket = requireBucket()
   let ContinuationToken: string | undefined
@@ -104,16 +107,16 @@ export async function listObjects(prefix: string): Promise<string[]> {
 
   return keys
 }
-
-// a shorter alias some codebases prefer
 export const list = listObjects
+/** অ্যালিয়াস: listPrefix */
+export const listPrefix = listObjects
 
-/** --------- SIGNED URL ---------- */
+/* ---------- SIGNED URL ---------- */
 export async function getSignedReadUrl(key: string, expiresInSeconds = 600) {
   const Bucket = requireBucket()
   const cmd = new GetObjectCommand({ Bucket, Key: key })
   return _getSignedUrl(s3, cmd, { expiresIn: expiresInSeconds })
 }
-
-// compatibility name used by some routes
 export const getSignedUrl = getSignedReadUrl
+/** অ্যালিয়াস: getSignedUrlFor */
+export const getSignedUrlFor = getSignedReadUrl
