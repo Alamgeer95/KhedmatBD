@@ -40,7 +40,7 @@ const categories = [
 ];
 
 export default function HomePage() {
-  const title = `মাদরাসা খেদমত খুঁজুন ও পোস্ট করুন — ${SITE_NAME}`;
+  const title = `মাদরাসা চাকরি খুঁজুন ও পোস্ট করুন — ${SITE_NAME}`;
   const ogImage = `${SITE_URL}/og/home.jpg`;
 
   const websiteJsonLd = {
@@ -230,7 +230,7 @@ export default function HomePage() {
                 <Link href="/post-job" className="btn btn-lg bg-[#0e1a30] text-[#f0f5ff] hover:bg-[#1a2d4a] rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                   খেদমত পোস্ট করুন
                 </Link>
-                <Link href="/signup" className="btn btn-lg btn-outline border-[#f0f5ff]/50 text-[#f0f5ff] hover:bg-white/10 rounded-full hover:-translate-y-1 transition-all duration-300">
+                <Link ref="/signup" className="btn btn-lg btn-outline border-[#f0f5ff]/50 text-[#f0f5ff] hover:bg-white/10 rounded-full hover:-translate-y-1 transition-all duration-300">
                   প্রোফাইল তৈরি করুন
                 </Link>
               </div>
