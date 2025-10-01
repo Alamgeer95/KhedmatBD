@@ -201,7 +201,7 @@ export default function HeroAuroraHex({ siteDesc }: { siteDesc: string }) {
             </div>
 
             <h1
-              className="mt-4 text-4xl sm:text-5xl md:text-6xl pt-3 font-extrabold tracking-tight leading-[1]
+              className="mt-4 text-4xl sm:text-5xl md:text-6xl pt-3 font-extrabold tracking-tight leading-[1] text-center
                          bg-clip-text text-transparent bg-gradient-to-br
                          from-slate-800 to-slate-600 dark:from-white dark:to-slate-300"
             >

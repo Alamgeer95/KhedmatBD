@@ -93,7 +93,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#0e1a30] text-[#f0f5ff]">
       {/* Background Geometric Shapes */}
-      <div className="absolute top-0 left-0 w-full h-full z-0">
+      <div className="absolute top-0 left-0 w-full h-full z-0 overflow-hidden">
         <div className="absolute top-[-20rem] left-[-20rem] w-[50rem] h-[50rem] bg-[#b88a4e]/5 rounded-full filter blur-3xl"></div>
         <div className="absolute bottom-[-25rem] right-[-15rem] w-[45rem] h-[45rem] bg-[#4e8a8a]/5 rounded-full filter blur-3xl"></div>
       </div>

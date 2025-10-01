@@ -200,12 +200,5 @@
   }
 }
 
-@layer utilities {
-  /* section/wrapper কে সত্যিকারের edge-to-edge করতে */
-  .full-bleed {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-  }
-}
+
 }
