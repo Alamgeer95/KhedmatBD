@@ -190,4 +190,13 @@
     0%, 100% { transform: translateY(0); }
     50%      { transform: translateY(-10px); }
   }
+
+  @layer utilities {
+  /* full-bleed section: background 100vw, content stays centered */
+  .full-bleed {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+}
 }

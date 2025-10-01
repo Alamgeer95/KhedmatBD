@@ -291,7 +291,8 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
         {/* Right: Nav + CTAs */}
         <div className="flex items-center gap-3 relative">
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-2 text-2xl font-extrabold font-['Tiro_Bangla'] relative">
+          <div className="hidden md:flex items-center gap-2 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold  font-['Tiro_Bangla'] relative
+          text-gray-800 dark:text-gray-100 hover:text-blue-600 transition-colors duration-300 antialiased cursor-pointer">
             <NavLink href="/jobs" icon={Briefcase}>
               খেদমতসমূহ
             </NavLink>
@@ -309,7 +310,7 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
   {/* Dropdown menu */}
   <div className="absolute top-full right-0 mt-2 w-72 origin-top-right scale-95 opacity-0 invisible 
                   group-hover:scale-100 group-hover:opacity-100 group-hover:visible transition-all duration-200">
-    <div className="p-2 bg-slate-900/80 backdrop-blur-lg rounded-xl shadow-2xl ring-1 ring-amber-300/20">
+    <div className="p-2 bg-slate-900/80 backdrop-blur-lg rounded-xl shadow-2xl ring-2 ring-emerald-400/30">
       <Link href="/about#mission" className="flex items-center gap-3 px-3 py-2 text-base text-slate-100 hover:bg-emerald-800/50 rounded-lg">
         <Star className="h-5 w-5 text-amber-300" /> আমাদের লক্ষ্য
       </Link>
@@ -371,7 +372,7 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between relative">
-                <span className="font-['Tiro_Bangla'] font-semibold text-2xl text-amber-200 relative">
+                <span className="font-['Tiro_Bangla'] font-semibold text-3xl text-amber-100 relative">
                   মেনু
                 </span>
                 <button
@@ -383,7 +384,7 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
                 </button>
               </div>
 
-              <nav className="mt-8 flex flex-col gap-4 font-['Tiro_Bangla'] text-lg relative">
+              <nav className="mt-8 flex flex-col gap-4 font-['Tiro_Bangla'] text-xl relative">
                 <NavLink
                   href="/jobs"
                   onClick={() => setOpen(false)}
@@ -400,7 +401,8 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
                 </NavLink>
                 <button
   type="button"
-  className="inline-flex items-center justify-between gap-2 rounded-full px-4 h-10 text-left font-['Tiro_Bangla'] text-slate-200 hover:text-white border border-amber-300/20"
+  className="inline-flex items-center justify-between gap-2 rounded-full px-4 h-10 text-left font-['Tiro_Bangla'] text-slate-200 hover:text-white border border-amber-300/20
+  transition-all duration-500 hover:bg-slate-800/40"
   aria-expanded={mobileAboutOpen}
   onClick={() => setMobileAboutOpen(v => !v)}
 >
@@ -458,9 +460,12 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
        </div>
        <span className="font-['Tiro_Bangla'] text-lg text-amber-100">{user.name || "প্রোফাইল"}</span>
      </Link>
-     <button onClick={logout} className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 px-4 py-2 text-amber-200 hover:bg-slate-800/60">
-       <LogOut className="h-4 w-4" /> লগআউট
-     </button>
+     <button 
+  onClick={logout} 
+  className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 px-3 py-1 text-sm text-amber-200 hover:bg-amber-600 hover:text-white transition-colors" // ✨ নতুন স্টাইল
+>
+  <LogOut className="h-4 w-4" /> লগআউট
+</button>
    </div>
  ) : (
    <Link href="/auth" onClick={() => setOpen(false)} className="inline-flex h-12 items-center justify-center rounded-full bg-gradient-to-r from-amber-600 to-emerald-600 px-6 text-lg font-medium text-white shadow-lg">

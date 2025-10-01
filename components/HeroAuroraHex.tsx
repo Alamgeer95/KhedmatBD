@@ -156,7 +156,7 @@ function FloatingShapes() {
 export default function HeroAuroraHex({ siteDesc }: { siteDesc: string }) {
   return (
     <section
-      className="relative container-app px-4 sm:px-6 lg:px-8
+      className="full-bleed relative container-app px-4 sm:px-6 lg:px-8
                  pt-[calc(var(--nav-h)+1.5rem)] pb-10 text-center min-h-[200px]"
     >
       {/* Gradient border wrapper (rounded rectangle) */}
