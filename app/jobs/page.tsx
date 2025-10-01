@@ -28,9 +28,9 @@ const jobs = Array.from({ length: 9 }).map((_, i) => ({
 }));
 
 export default function JobsListingPage() {
-  const title = "সকল খেদমত";
+  const title = "সকল চাকরি";
   const desc =
-    "বাংলাদেশের মাদরাসা, মসজিদ, ইসলামিক স্কুল ও এনজিওতে সর্বশেষ খেদমত।";
+    "বাংলাদেশের মাদরাসা, মসজিদ, ইসলামিক স্কুল ও এনজিওতে সর্বশেষ চাকরি।";
 
   return (
     <>

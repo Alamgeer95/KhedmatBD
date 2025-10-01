@@ -1,6 +1,6 @@
 // app/layout.tsx
 import Image from "next/image";
-import logo from "components/site-logo.png"; 
+import logo from "@/components/site-logo.png"; 
 import type { Metadata } from 'next'
 import { ReactNode } from 'react'
 import './globals.css'
@@ -8,8 +8,6 @@ import Providers from './providers'
 import Navbar from '@/components/Navbar'
 import { Tiro_Bangla } from 'next/font/google'
 import Link from "next/link";
-
-
 
 const SITE_NAME = "KhedmatBD";
 
@@ -30,16 +28,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="bn"
-      
-      className={`${tiroBangla.variable} h-full bg-[#fcf8e8] overscroll-y-none`}
+      className={`${tiroBangla.variable} h-full bg-[#fcf8e8] overflow-y-auto`}
     >
       <body className="min-h-screen bg-[#fcf8e8] text-[#2c3e50] antialiased flex flex-col">
         <Navbar />
         <Providers>{children}</Providers>
 
         {/* GLOBAL FOOTER */}
-        {/* GLOBAL FOOTER */}
-<footer className="border-t border-white/10 mt-12 bg-[#0e1a30] text-[#f0f5ff]">
+        <footer className="border-t border-white/10 mt-12 bg-[#0e1a30] text-[#f0f5ff]">
   <div className="container-app py-12 grid md:grid-cols-4 gap-8 text-center md:text-left">
     {/* Logo & Description */}
     <div className="md:col-span-1">
@@ -66,7 +62,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <ul className="flex flex-wrap justify-center md:block mt-4 space-x-4 md:space-x-0 md:space-y-2 text-sm">
         <li>
           <Link href="/jobs" className="text-[#a1b2d4] hover:text-[#b88a4e]">
-            খেদমতসমূহ
+            খেদমত খুঁজুন
           </Link>
         </li>
         <li>
@@ -75,13 +71,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </Link>
         </li>
         <li>
-          <Link href="/about" className="text-[#a1b2d4] hover:text-[#b88a4e]">
-            আমাদের সম্পর্কে
+          <Link href="/contact" className="text-[#a1b2d4] hover:text-[#b88a4e]">
+            যোগাযোগ
           </Link>
         </li>
         <li>
-          <Link href="/contact" className="text-[#a1b2d4] hover:text-[#b88a4e]">
-            যোগাযোগ
+          <Link href="/about" className="text-[#a1b2d4] hover:text-[#b88a4e]">
+            আমাদের সম্পর্কে
           </Link>
         </li>
       </ul>

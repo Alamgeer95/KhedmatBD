@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useFormStatus, useFormState } from 'react-dom'
+import { ActionState } from '@/types'
 
 // ---- Client Form (client) ----
 function SubmitBtn() {
@@ -24,13 +25,7 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
   const [city, setCity] = React.useState('')
   const [salary, setSalary] = React.useState('')
 
-  React.useEffect(() => {
-    if (state?.ok) {
-      redirect(`/jobs/${state.slug}`)
-    }
-  }, [state])
-
-  // ইনপুটগুলো থেকে লাইভ প্রিভিউ (ডিবাউন্স)
+  // ইনপুটগুলো থেকে লাইভ প্রিভিউ
   React.useEffect(() => {
     const handler = (e: Event) => {
       const t = e.target as HTMLInputElement | HTMLTextAreaElement
@@ -90,7 +85,6 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
             <Label>দেশ</Label>
             <Select name="country" defaultValue="BD">
               <option value="BD">বাংলাদেশ</option>
-              {/* অন্যান্য দেশ যোগ করুন */}
             </Select>
           </div>
 
@@ -122,7 +116,6 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
               <Input name="salaryValue" type="number" placeholder="যেমন: 50000" />
               <Select name="salaryCurrency" defaultValue="BDT">
                 <option value="BDT">BDT</option>
-                {/* অন্যান্য কারেন্সি */}
               </Select>
               <Select name="salaryUnit" defaultValue="MONTH">
                 <option value="MONTH">মাস</option>

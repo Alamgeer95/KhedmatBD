@@ -16,32 +16,31 @@ type Listed = { Key: string; Size?: number; LastModified?: Date }
 function toBuffer(input: Buffer | Uint8Array | ArrayBuffer) {
   if (input instanceof Buffer) return input
   if (input instanceof Uint8Array) return Buffer.from(input)
-  return Buffer.from(input as ArrayBuffer)
+  return Buffer.from(input)
 }
 
-function streamToBuffer(stream: any): Promise<Buffer> {
+function streamToBuffer(stream: Readable): Promise<Buffer> {
   return new Promise((resolve, reject) => {
-    const chunks: any[] = []
-    ;(stream as Readable)
-      .on('data', (c) => chunks.push(c))
+    const chunks: Buffer[] = []
+    stream.on('data', (c: Buffer) => chunks.push(c))
       .on('end', () => resolve(Buffer.concat(chunks)))
       .on('error', reject)
   })
 }
 
 const s3 = new S3Client({
-  region: process.env.S3_REGION || 'auto', // R2 → 'auto'
-  endpoint: process.env.S3_ENDPOINT || undefined, // https://<ACCOUNT_ID>.r2.cloudflarestorage.com
+  region: process.env.S3_REGION || 'auto',
+  endpoint: process.env.S3_ENDPOINT,
   forcePathStyle: (process.env.S3_FORCE_PATH_STYLE || 'false') === 'true',
   credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
   },
 })
 
 function requireBucket(): string {
   const b = process.env.S3_BUCKET
-  if (!b) throw new Error('Missing S3_BUCKET')
+  if (!b) throw new Error('Missing S3_BUCKET environment variable')
   return b
 }
 
@@ -58,10 +57,9 @@ export async function putFile(
       Key: key,
       Body: toBuffer(body),
       ContentType: opts.contentType,
-      // R2-এ ACL ব্যবহার করবেন না
     })
   )
-  return { url: `s3://${Bucket}/${key}`, etag: (res as any)?.ETag }
+  return { url: `s3://${Bucket}/${key}`, etag: res.ETag }
 }
 
 export async function putJson(key: string, data: unknown) {
@@ -73,7 +71,7 @@ export async function putJson(key: string, data: unknown) {
 export async function getObject(key: string): Promise<GetResult> {
   const Bucket = requireBucket()
   const res = await s3.send(new GetObjectCommand({ Bucket, Key: key }))
-  const body = await streamToBuffer(res.Body as any)
+  const body = await streamToBuffer(res.Body as Readable)
   const contentType = res.ContentType
   return { body, contentType }
 }
@@ -90,7 +88,6 @@ export async function getObjectText(key: string, encoding: BufferEncoding = 'utf
 }
 
 /* ---------- LIST ---------- */
-/** string[] চাইলে এটা ব্যবহার করুন */
 export async function listObjects(prefix: string): Promise<string[]> {
   const Bucket = requireBucket()
   let ContinuationToken: string | undefined
@@ -109,7 +106,6 @@ export async function listObjects(prefix: string): Promise<string[]> {
   return keys
 }
 
-/** আপনার রাউটগুলোর সাথে ১:১ কম্প্যাটিবল: { Key } অবজেক্টস রিটার্ন করে */
 export async function listObjectsWithMeta(prefix: string): Promise<Listed[]> {
   const Bucket = requireBucket()
   let ContinuationToken: string | undefined
@@ -129,7 +125,7 @@ export async function listObjectsWithMeta(prefix: string): Promise<Listed[]> {
 }
 
 export const list = listObjects
-export const listPrefix = listObjectsWithMeta // ← আপনার কোডে o.Key কাজ করবে
+export const listPrefix = listObjectsWithMeta
 
 /* ---------- SIGNED URL ---------- */
 export async function getSignedReadUrl(key: string, expiresInSeconds = 600) {

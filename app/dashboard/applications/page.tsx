@@ -1,3 +1,4 @@
+// app/dashboard/Application/page.tsx
 'use client'
 
 import useSWR from 'swr'

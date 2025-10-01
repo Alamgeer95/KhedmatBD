@@ -1,5 +1,7 @@
 "use client";
 
+import type { Route } from "next";
+import type { UrlObject } from "url";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -89,21 +91,17 @@ function useOnClickOutside<T extends HTMLElement>(cb: () => void) {
 }
 
 // ---- NavLink with smart underline ----
-function NavLink({
-  href,
-  children,
-  onClick,
-  className = "",
-  icon: Icon,
-}: {
-  href: string;
+interface NavLinkProps {
+  href: Route | UrlObject;
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
   icon?: React.ComponentType<{ className?: string }>;
-}) {
+}
+
+function NavLink({ href, children, onClick, className = "", icon: Icon }: NavLinkProps) {
   const pathname = usePathname();
-  const isActive = pathname === href || pathname.startsWith(href + "/");
+  const isActive = pathname === href || pathname.startsWith(String(href) + "/");
 
   return (
     <Link

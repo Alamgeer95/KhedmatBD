@@ -9,6 +9,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { putFile, putJson } from '@/lib/storage'
 import PostJobForm from './PostJobForm'
+import type { ActionState } from '@/types'
 
 // এই পেজে ডাইনামিক সার্ভার কোড আছে (Server Action + S3), তাই:
 export const runtime = 'nodejs'
@@ -36,10 +37,6 @@ function extFromMime(mime?: string) {
 }
 
 // ---------- Server Action ----------
-type ActionState =
-  | { ok: false; error: string }
-  | { ok: true; slug: string }
-
 async function createJobAction(_prevState: ActionState | null, formData: FormData): Promise<ActionState> {
   'use server'
 
@@ -59,12 +56,14 @@ async function createJobAction(_prevState: ActionState | null, formData: FormDat
 
   const salaryValueRaw = (formData.get('salaryValue') as string || '').trim()
   const salaryCurrency = (formData.get('salaryCurrency') as string || 'BDT').trim() || 'BDT'
-  const salaryUnit = (formData.get('salaryUnit') as string || 'MONTH').trim() as 'MONTH'|'WEEK'|'DAY'
+  const salaryUnit = (formData.get('salaryUnit') as string || 'MONTH') as 'MONTH' | 'WEEK' | 'DAY'
 
   if (title.length < 3) return { ok: false, error: 'শিরোনাম কমপক্ষে ৩ অক্ষর দিন' }
   if (description.length < 20) return { ok: false, error: 'বর্ণনা কমপক্ষে ২০ অক্ষর দিন' }
   if (orgName.length < 2) return { ok: false, error: 'প্রতিষ্ঠানের নাম দিন' }
   if (city.length < 2) return { ok: false, error: 'শহর/উপজেলা দিন' }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: 'অবৈধ ইমেইল' }
+  if (applicationUrl && !/^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/.test(applicationUrl)) return { ok: false, error: 'অবৈধ URL' }
 
   // 2) ইউনিক slug
   const base = slugify(`${title}-${city}`)
@@ -80,7 +79,8 @@ async function createJobAction(_prevState: ActionState | null, formData: FormDat
   async function maybeUpload(key: string, f: File | null) {
     if (!f || f.size === 0) return undefined
     if (f.size > 5 * 1024 * 1024) throw new Error('ফাইল ৫MB এর কম হতে হবে')
-
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/webp', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+    if (!allowedTypes.includes(f.type)) throw new Error('অনুমোদিত ফাইল টাইপ নয়')
     const ext = extFromMime(f.type)
     const finalKey = ext ? `${key}${ext}` : key
     const arrayBuffer = await f.arrayBuffer()
@@ -127,10 +127,9 @@ async function createJobAction(_prevState: ActionState | null, formData: FormDat
 
   // 6) Revalidate
   revalidatePath('/jobs')
-  revalidatePath('/jobs/[slug]', 'page')
 
   // 7) রিডাইরেক্ট
-  return { ok: true, slug }
+  redirect(`/jobs/${slug}`)
 }
 
 export default function Page() {

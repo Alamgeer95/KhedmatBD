@@ -1,3 +1,4 @@
+// app/dashboard/application/[id]/page.tsx
 import ApplicationDetailsClient from './ApplicationDetailsClient'
 
 type IdParams = { id: string }
