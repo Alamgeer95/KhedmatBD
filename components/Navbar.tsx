@@ -225,7 +225,6 @@ export default function IslamicModernNavbar({
 }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [hiddenOnScroll, setHiddenOnScroll] = useState(false);
   const { user, logout } = useAuth();
 
   // mobile submenu state
@@ -233,17 +232,10 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
 
   // Hide-on-scroll logic
   useEffect(() => {
-    let lastY = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 10);
-      setHiddenOnScroll(y > 80 && y - lastY > 4);
-      lastY = y;
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const onScroll = () => setScrolled(window.scrollY > 10);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  return () => window.removeEventListener("scroll", onScroll);
+}, []);
 
   // ESC closes mobile menu
   useEffect(() => {
@@ -254,13 +246,12 @@ const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
 
   return (
     <header
-  className={`relative sticky top-0 z-50 w-full transition-[transform,background,border,box-shadow] duration-300 
+  className={`fixed inset-x-0 top-0 z-50 w-full transition-[background,border,box-shadow] duration-300
     before:content-[''] before:absolute before:-top-10 before:left-0 before:right-0 before:h-10
     before:bg-gradient-to-b before:from-[#2e1a3b] before:to-transparent
     ${scrolled
       ? "border-b border-fuchsia-400/20 bg-[#25162f] shadow-2xl shadow-purple-900/20"
-      : "border-b border-transparent bg-[#25162f]"}
-    ${hiddenOnScroll ? "-translate-y-2" : "translate-y-0"}`}
+      : "border-b border-transparent bg-[#25162f]"}`}
 >
 
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#0a1c1a] to-[#12332f] relative">

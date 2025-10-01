@@ -21,14 +21,16 @@ const tiroBangla = Tiro_Bangla({
 
 export const metadata: Metadata = {
   title: 'KhedmatBD',
-  description: 'মাদরাসা, মসজিদ, ইসলামিক স্কুল ও সংস্থার জন্য খেদমত প্ল্যাটফর্ম',
+  description: 'মাদরাসা, মসজিদ, ইসলামিক শিক্ষ-প্রতিষ্ঠান ও সংস্থার জন্য স্মার্ট খেদমত প্ল্যাটফর্ম',
+  viewport: 'width=device-width, initial-scale=1.0',
 }
+
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="bn"
-      className={`${tiroBangla.variable} h-full bg-[#fcf8e8] overflow-y-auto`}
+      className={`${tiroBangla.variable} h-full bg-[#fcf8e8]`}
     >
       <body className="min-h-screen bg-[#fcf8e8] text-[#2c3e50] antialiased flex flex-col">
         <Navbar />
