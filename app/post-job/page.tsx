@@ -42,7 +42,7 @@ type Job = {
   validThrough?: string;
   applicationUrl?: string;
   email?: string;
-  jdKey?: string; // এটি যোগ করা হলো
+  jdFile?: string; // এটি যোগ করা হলো
   datePosted: string;
   published: boolean;
   slug: string;
@@ -56,10 +56,10 @@ export const dynamic = 'force-dynamic'
 function slugify(input: string) {
   return input
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
     .trim()
     .replace(/\s+/g, '-')
-    .slice(0, 60)
+    .replace(/[^a-z0-9\u0980-\u09FF-]/g, '') // বাংলা সাপোর্ট যোগ
+    .slice(0, 60) || 'default-job'; // খালি হলে ডিফল্ট
 }
 
 function extFromMime(mime?: string) {
@@ -171,7 +171,7 @@ if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i.tes
   validThrough,
   applicationUrl,  // যদি থাকে
   email,  // অতিরিক্ত, jsonLd-এ নেই কিন্তু রাখতে পারেন
-  jdKey,  // অতিরিক্ত, পরে ডিসপ্লে যোগ করতে পারেন
+  jdFile: jdKey,  // অতিরিক্ত, পরে ডিসপ্লে যোগ করতে পারেন
   datePosted: new Date().toISOString(),
   published: true,  // এটা যোগ করুন যাতে !job.published false হয়
   slug,  // অতিরিক্ত, যদি দরকার
@@ -185,7 +185,8 @@ if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i.tes
   }
 
   // 6) Revalidate
-  revalidatePath('/jobs')
+  revalidatePath('/jobs');
+revalidatePath(`/jobs/${slug}`);
 
   // 7) রিডাইরেক্ট
   redirect(`/jobs/${slug}`)

@@ -1,36 +1,35 @@
-// app/jobs/page.tsx
 import Link from "next/link";
 import Image from "next/image";
 import Seo from "@/components/Seo";
 import { abs } from "@/utils/abs";
+import { listObjectsWithMeta, getJson } from '@/lib/storage'; // getJson ইম্পোর্ট করা হলো
 
-// ডেমো ডাটা
-const jobs = Array.from({ length: 9 }).map((_, i) => ({
-  slug: `sample-${i + 1}`,
-  title: [
-    "আরবি শিক্ষক",
-    "কুরআন শিক্ষক",
-    "অফিস অ্যাডমিন",
-    "আইটি সাপোর্ট",
-    "ফান্ডরেইজিং অফিসার",
-    "ইমাম",
-  ][i % 6],
-  org: [
-    "আন-নূর মাদরাসা",
-    "দারুস সালাম",
-    "ইকরা একাডেমি",
-    "রহমা ট্রাস্ট",
-    "নূর মসজিদ",
-    "আল-ফালাহ ইনস্টিটিউট",
-  ][i % 6],
-  location: ["ঢাকা", "চট্টগ্রাম", "সিলেট", "মক্কা", "মাদিনা", "জেদ্দা"][i % 6],
-  logo: "/placeholders/org-logo.png",
-}));
+async function getAllJobs() {
+  const items = await listObjectsWithMeta('jobs/'); // S3 থেকে সব জব লোড
+  const jobs = [];
+  for (const item of items) {
+    if (item.Key.endsWith('job.json')) {
+      const slug = item.Key.split('/')[1]; // slug এক্সট্র্যাক্ট
+      const jobData = await getJson(item.Key); // job.json পড়ুন
+      if (jobData && jobData.published) { // শুধুমাত্র প্রকাশিত জব যোগ
+        jobs.push({
+          slug: slug,
+          title: jobData.title || 'শিরোনাম নেই',
+          org: jobData.hiringOrganization?.name || 'নাম নেই',
+          location: jobData.jobLocation?.address?.addressLocality || 'লোকেশন নেই',
+          logo: jobData.hiringOrganization?.logo || '/placeholders/org-logo.png',
+        });
+      }
+    }
+  }
+  console.log('Found jobs:', jobs); // ডিবাগ লগ যোগ
+  return jobs;
+}
 
-export default function JobsListingPage() {
+export default async function JobsListingPage() {
+  const jobs = await getAllJobs(); // S3 থেকে লোড
   const title = "সকল চাকরি";
-  const desc =
-    "বাংলাদেশের মাদরাসা, মসজিদ, ইসলামিক স্কুল ও এনজিওতে সর্বশেষ চাকরি।";
+  const desc = "বাংলাদেশের মাদরাসা, মসজিদ, ইসলামিক স্কুল ও এনজিওতে সর্বশেষ চাকরি।";
 
   return (
     <>
