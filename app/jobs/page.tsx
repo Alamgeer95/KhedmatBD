@@ -5,13 +5,13 @@ import { abs } from "@/utils/abs";
 import { listObjectsWithMeta, getJson } from '@/lib/storage'; // getJson ইম্পোর্ট করা হলো
 
 async function getAllJobs() {
-  const items = await listObjectsWithMeta('jobs/'); // S3 থেকে সব জব লোড
+  const items = await listObjectsWithMeta('jobs/'); // S3 থেকে সব খেদমতলোড
   const jobs = [];
   for (const item of items) {
     if (item.Key.endsWith('job.json')) {
       const slug = item.Key.split('/')[1]; // slug এক্সট্র্যাক্ট
       const jobData = await getJson(item.Key); // job.json পড়ুন
-      if (jobData && jobData.published) { // শুধুমাত্র প্রকাশিত জব যোগ
+      if (jobData && jobData.published) { // শুধুমাত্র প্রকাশিত খেদমতযোগ
         jobs.push({
           slug: slug,
           title: jobData.title || 'শিরোনাম নেই',
@@ -28,8 +28,8 @@ async function getAllJobs() {
 
 export default async function JobsListingPage() {
   const jobs = await getAllJobs(); // S3 থেকে লোড
-  const title = "সকল চাকরি";
-  const desc = "বাংলাদেশের মাদরাসা, মসজিদ, ইসলামিক স্কুল ও এনজিওতে সর্বশেষ চাকরি।";
+  const title = "সকল খেদমত";
+  const desc = "বাংলাদেশের মাদরাসা, মসজিদ, ইসলামিক স্কুল ও এনজিওতে সর্বশেষ খেদমত।";
 
   return (
     <>
@@ -110,7 +110,7 @@ export default async function JobsListingPage() {
 
             {jobs.length === 0 && (
               <div className="col-span-full text-center text-[#a1b2d4] py-10">
-                কোনো জব পাওয়া যায়নি।
+                কোনো খেদমতপাওয়া যায়নি।
               </div>
             )}
           </div>

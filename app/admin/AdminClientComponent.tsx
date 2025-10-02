@@ -87,7 +87,7 @@ export default function AdminClientComponent({
               <ActionLink href="/dashboard/applications">সব আবেদন দেখুন</ActionLink>
               <ActionLink href="/api/admin/applications.csv">CSV এক্সপোর্ট (সব)</ActionLink>
               <ActionLink href="/post-job">নতুন খেদমত পোস্ট</ActionLink>
-              <ActionLink href="/jobs">পাবলিক জব লিস্ট</ActionLink>
+              <ActionLink href="/jobs">পাবলিক খেদমতলিস্ট</ActionLink>
               <ActionLink href="/admin/login">অ্যাডমিন লগইন</ActionLink>
             </div>
           </Card>
@@ -103,7 +103,7 @@ export default function AdminClientComponent({
             </ul>
           </Card>
 
-          <Card heading="সাম্প্রতিক জব (২০)">
+          <Card heading="সাম্প্রতিক খেদমত(২০)">
             {recentJobs.length ? (
               <ul className="text-sm space-y-2">
                 {recentJobs.slice(0,8).map(j => (
@@ -114,7 +114,7 @@ export default function AdminClientComponent({
                 ))}
               </ul>
             ) : (
-              <div className="text-sm text-emerald-100/70">কোনো সাম্প্রতিক জব পাওয়া যায়নি।</div>
+              <div className="text-sm text-emerald-100/70">কোনো সাম্প্রতিক খেদমতপাওয়া যায়নি।</div>
             )}
           </Card>
         </div>

@@ -27,6 +27,7 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
 
   // ইনপুটগুলো থেকে লাইভ প্রিভিউ
   React.useEffect(() => {
+    if (typeof window !== 'undefined') {
     const handler = (e: Event) => {
       const t = e.target as HTMLInputElement | HTMLTextAreaElement
       if (!t || !t.name) return
@@ -37,13 +38,14 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
     }
     document.addEventListener('input', handler, true)
     return () => document.removeEventListener('input', handler, true)
+    }
   }, [])
 
   return (
     <main className="min-h-screen py-12 px-4 bg-gradient-to-br from-emerald-900/20 to-emerald-500/10">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
         <form action={formAction} className="space-y-6">
-          <h1 className="text-3xl font-bold text-slate-900">জব পোস্ট করুন</h1>
+          <h1 className="text-3xl font-bold text-slate-900">খেদমতপোস্ট করুন</h1>
           <p className="text-slate-600">সকল ফিল্ড ঠিকমতো পূরণ করুন।</p>
 
           <div>
@@ -89,7 +91,7 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
           </div>
 
           <div>
-            <Label>চাকরির ধরণ</Label>
+            <Label>খেদমতর ধরণ</Label>
             <Select name="employmentType">
               <option value="">নির্বাচন করুন</option>
               <option value="FULL_TIME">ফুল টাইম</option>
@@ -110,7 +112,7 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
   <Input 
     name="applicationUrl" 
     placeholder="যেমন: https://example.com/apply" 
-    pattern="^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$" 
+    pattern="^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\\w./?%&=\\-]*)?$"  
     title="সঠিক URL দিন (http/https সহ)" 
   />
 </div>
@@ -136,7 +138,7 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
           </div>
 
           <div>
-            <Label>জব ডেসক্রিপশন ফাইল (PDF/DOC)</Label>
+            <Label>খেদমতডেসক্রিপশন ফাইল (PDF/DOC)</Label>
             <FileInput name="jdFile" accept=".pdf,.doc,.docx" />
           </div>
 

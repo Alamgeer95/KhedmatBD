@@ -20,7 +20,7 @@ export default async function Page(
       <header className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/70 backdrop-blur">
         <div className="mx-auto max-w-5xl px-4 md:px-6 h-16 flex items-center justify-between">
           <Link href="/" className="font-semibold">KhedmatBD</Link>
-          <Link href="/jobs" className="text-sm hover:underline">সব চাকরি</Link>
+          <Link href="/jobs" className="text-sm hover:underline">সব খেদমত</Link>
         </div>
       </header>
 
@@ -46,7 +46,7 @@ export default async function Page(
             href="/jobs"
             className="px-5 h-11 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 flex items-center"
           >
-            আরও চাকরি দেখুন
+            আরও খেদমত দেখুন
           </Link>
         </div>
       </section>

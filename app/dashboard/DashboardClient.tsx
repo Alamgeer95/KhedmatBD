@@ -114,7 +114,7 @@ export default function DashboardClient({
             icon={<BarChart2 className="h-4 w-4" />}
           />
           <ChartCard
-            title="জব পোস্ট ট্রেন্ড (শেষ 8 সপ্তাহ)"
+            title="খেদমতপোস্ট ট্রেন্ড (শেষ 8 সপ্তাহ)"
             subtitle="প্রতি সপ্তাহে পোস্ট"
             series={jobsSeries}
             color="amber"
@@ -410,7 +410,7 @@ function JobsPanel({ jobs }: { jobs: JobJson[] }) {
           ))}
         </ul>
       ) : (
-        <div className="text-sm text-emerald-100/70">এই রেঞ্জে কোনো জব নেই।</div>
+        <div className="text-sm text-emerald-100/70">এই রেঞ্জে কোনো খেদমতনেই।</div>
       )}
     </>
   )

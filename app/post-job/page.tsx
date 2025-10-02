@@ -53,7 +53,7 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 // ---------- ছোট util ----------
-function slugify(input: string) {
+function slugifyOrg(input: string) {
   return input
     .toLowerCase()
     .trim()
@@ -100,11 +100,11 @@ async function createJobAction(_prevState: ActionState | null, formData: FormDat
   if (orgName.length < 2) return { ok: false, error: 'প্রতিষ্ঠানের নাম দিন' }
   if (city.length < 2) return { ok: false, error: 'শহর/উপজেলা দিন' }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: 'অবৈধ ইমেইল' }
-if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i.test(applicationUrl)) {
-  return { ok: false, error: 'অবৈধ URL: http/https সহ সঠিক ফরম্যাট দিন (যেমন: https://example.com/apply)' };
-}
+if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w./?%&=\-]*)?$/i.test(applicationUrl)) {
+   return { ok: false, error: 'অবৈধ URL: http/https সহ সঠিক ফরম্যাট দিন (যেমন: https://example.com/apply)' };
+ }
   // 2) ইউনিক slug
-  const base = slugify(`${title}-${city}`)
+  const base = slugifyOrg(`${title}-${city}`)
   const slug = `${base}-${Date.now().toString(36).slice(-4)}`
 
   // 3) ফাইল (logo, jd) — Max 5MB
@@ -135,7 +135,7 @@ if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i.tes
   try {
     jdKey = await maybeUpload(`jobs/${slug}/jd`, jd)
   } catch (e: any) {
-    return { ok: false, error: 'জব ডেসক্রিপশন ফাইল আপলোড ব্যর্থ: ' + e.message }
+    return { ok: false, error: 'খেদমতডেসক্রিপশন ফাইল আপলোড ব্যর্থ: ' + e.message }
   }
 
   // 4) JSON তৈরি
@@ -181,7 +181,7 @@ if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i.tes
   try {
     await putJson(`jobs/${slug}/job.json`, job)
   } catch (e: any) {
-    return { ok: false, error: 'জব তথ্য সংরক্ষণ ব্যর্থ: ' + e.message }
+    return { ok: false, error: 'খেদমততথ্য সংরক্ষণ ব্যর্থ: ' + e.message }
   }
 
   // 6) Revalidate
@@ -189,9 +189,28 @@ if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i.tes
 revalidatePath(`/jobs/${slug}`);
 
   // 7) রিডাইরেক্ট
-  redirect(`/jobs/${slug}`)
+  redirect(`/post-job?posted=1`)
 }
 
-export default function Page() {
-  return <PostJobForm createJobAction={createJobAction} />
+// 8)✅ সাকসেস ব্যানার কম্পোনেন্ট
+function SuccessAlert() {
+  return (
+    <div className="mb-4 rounded-lg border border-green-200 bg-green-50 p-3 text-green-800">
+      <strong className="font-medium">সফল!</strong>{" "}
+      আপনার পোস্টটি সফলভাবে সার্ভারে জমা হয়েছে। অতি শীঘ্রই সাইটে প্রদর্শিত হবে।
+    </div>
+  );
+}
+
+
+export default function Page({ searchParams }: { searchParams?: Record<string, string> }) {
+  const posted = searchParams?.posted === '1';
+
+  return (
+    <div className="mx-auto max-w-2xl p-4">
+      {posted && <SuccessAlert />}         {/* 🔹 উপরে সাকসেস মেসেজ */}
+
+      <PostJobForm createJobAction={createJobAction} />
+    </div>
+  );
 }

@@ -31,8 +31,8 @@ type Job = {
   slug?: string;
 };
 
-export default async function JobDetails({ params }: { params: Promise<{ slug: string }> }) {
-  const p = await params;
+export default async function JobDetails({ params }: { params: { slug: string } }) {
+  const p = params;
   const job: Job = await getJob(p.slug);
 console.log('Loaded job for slug', p.slug, ':', job); // সার্ভার লগ চেক করুন
 
@@ -58,20 +58,20 @@ console.log('Loaded job for slug', p.slug, ':', job); // সার্ভার �
     validThrough: job.validThrough || undefined,
     employmentType: job.employmentType || undefined,
     hiringOrganization: {
-      '@type': 'Organization',
-      name: job.hiringOrganization.name,
-      sameAs: job.hiringOrganization.sameAs || undefined,
-      logo: job.hiringOrganization.logo || undefined,
-    },
+       '@type': 'Organization',
+      name: job.hiringOrganization?.name,
+      sameAs: job.hiringOrganization?.sameAs || undefined,
+      logo: job.hiringOrganization?.logo || undefined,
+     },
     jobLocation: {
-      '@type': 'Place',
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: job.jobLocation.addressLocality,
-        addressRegion: job.jobLocation.addressRegion || undefined,
-        addressCountry: job.jobLocation.addressCountry,
-      },
-    },
+       '@type': 'Place',
+       address: {
+         '@type': 'PostalAddress',
+        addressLocality: job.jobLocation?.addressLocality,
+        addressRegion: job.jobLocation?.addressRegion || undefined,
+        addressCountry: job.jobLocation?.addressCountry,
+       },
+     },
     ...(job.baseSalary
       ? {
           baseSalary: {
@@ -182,7 +182,7 @@ console.log('Loaded job for slug', p.slug, ':', job); // সার্ভার �
     {job.description}
     {job.jdFile && (
       <a href={job.jdFile} target="_blank" rel="noopener noreferrer" className="text-[#b88a4e] hover:underline">
-        জব ডেসক্রিপশন ফাইল ডাউনলোড করুন (PDF/DOC)
+        খেদমতডেসক্রিপশন ফাইল ডাউনলোড করুন (PDF/DOC)
       </a>
     )}
   </div>
@@ -193,7 +193,7 @@ console.log('Loaded job for slug', p.slug, ':', job); // সার্ভার �
           <aside>
             <div className="lg:sticky lg:top-24">
               <div className="p-6 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-lg shadow-black/20">
-                <div className="text-lg font-bold text-[#b88a4e] text-center">জব সামারি</div>
+                <div className="text-lg font-bold text-[#b88a4e] text-center">খেদমতসামারি</div>
 
                 <ul className="mt-4 space-y-3 text-sm text-[#a1b2d4]">
                   {job.baseSalary?.value && job.baseSalary?.currency && (
