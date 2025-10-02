@@ -31,10 +31,9 @@ type Job = {
   slug?: string;
 };
 
-export default async function JobDetails({ params }: { params: { slug: string } }) {
-  const p = params;
-  const job: Job = await getJob(p.slug);
-console.log('Loaded job for slug', p.slug, ':', job); // সার্ভার লগ চেক করুন
+export default async function JobDetails({ params }: { params: Promise<{ slug: string }> }) {
+  const p = await params;               // ← এখানে await যোগ হলো
+  const job: Job = await getJob(p.slug); // সার্ভার লগ চেক করুন
 
   if (!job || !job.published) {
     return (
