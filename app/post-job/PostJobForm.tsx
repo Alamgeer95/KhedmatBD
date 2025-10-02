@@ -106,9 +106,14 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
           </div>
 
           <div>
-            <Label>আবেদনের লিঙ্ক</Label>
-            <Input name="applicationUrl" placeholder="যেমন: https://example.com/apply" />
-          </div>
+  <Label>আবেদনের লিঙ্ক</Label>
+  <Input 
+    name="applicationUrl" 
+    placeholder="যেমন: https://example.com/apply" 
+    pattern="^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$" 
+    title="সঠিক URL দিন (http/https সহ)" 
+  />
+</div>
 
           <div>
             <Label>সম্মানী</Label>

@@ -11,6 +11,43 @@ import { putFile, putJson } from '@/lib/storage'
 import PostJobForm from './PostJobForm'
 import type { ActionState } from '@/types'
 
+type Job = {
+  title: string;
+  description: string;
+  hiringOrganization: {
+    '@type': string;
+    name: string;
+    sameAs?: string;
+    logo?: string;
+  };
+  jobLocation: {
+    '@type': string;
+    address: {
+      '@type': string;
+      addressLocality: string;
+      addressRegion?: string;
+      addressCountry: string;
+    };
+  };
+  baseSalary?: {
+    '@type': string;
+    currency: string;
+    value: {
+      '@type': string;
+      value: number;
+      unitText: string;
+    };
+  };
+  employmentType?: string;
+  validThrough?: string;
+  applicationUrl?: string;
+  email?: string;
+  jdKey?: string; // এটি যোগ করা হলো
+  datePosted: string;
+  published: boolean;
+  slug: string;
+};
+
 // এই পেজে ডাইনামিক সার্ভার কোড আছে (Server Action + S3), তাই:
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -63,8 +100,9 @@ async function createJobAction(_prevState: ActionState | null, formData: FormDat
   if (orgName.length < 2) return { ok: false, error: 'প্রতিষ্ঠানের নাম দিন' }
   if (city.length < 2) return { ok: false, error: 'শহর/উপজেলা দিন' }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: 'অবৈধ ইমেইল' }
-  if (applicationUrl && !/^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/.test(applicationUrl)) return { ok: false, error: 'অবৈধ URL' }
-
+if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i.test(applicationUrl)) {
+  return { ok: false, error: 'অবৈধ URL: http/https সহ সঠিক ফরম্যাট দিন (যেমন: https://example.com/apply)' };
+}
   // 2) ইউনিক slug
   const base = slugify(`${title}-${city}`)
   const slug = `${base}-${Date.now().toString(36).slice(-4)}`
@@ -102,21 +140,42 @@ async function createJobAction(_prevState: ActionState | null, formData: FormDat
 
   // 4) JSON তৈরি
   const salaryValue = salaryValueRaw ? parseInt(salaryValueRaw, 10) : undefined
-  const job = {
-    title,
-    description,
-    orgName,
-    orgWebsite,
-    email,
-    location: { city, region, country },
-    employmentType,
-    validThrough,
-    applicationUrl,
-    salary: salaryValue ? { value: salaryValue, currency: salaryCurrency, unit: salaryUnit } : undefined,
+  const job: Job = {
+  title,
+  description,
+  hiringOrganization: {  // নেস্টেড যোগ করুন
+    '@type': 'Organization',  // jsonLd-এর মতো
+    name: orgName,
+    sameAs: orgWebsite,
     logo: logoKey,
-    jdFile: jdKey,
-    postedAt: new Date().toISOString(),
-  }
+  },
+  jobLocation: {  // নেস্টেড যোগ করুন
+    '@type': 'Place',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: city,
+      addressRegion: region,
+      addressCountry: country,
+    },
+  },
+  baseSalary: salaryValue ? {  // নেস্টেড যোগ করুন
+    '@type': 'MonetaryAmount',
+    currency: salaryCurrency,
+    value: {
+      '@type': 'QuantitativeValue',
+      value: salaryValue,
+      unitText: salaryUnit,
+    },
+  } : undefined,
+  employmentType,
+  validThrough,
+  applicationUrl,  // যদি থাকে
+  email,  // অতিরিক্ত, jsonLd-এ নেই কিন্তু রাখতে পারেন
+  jdKey,  // অতিরিক্ত, পরে ডিসপ্লে যোগ করতে পারেন
+  datePosted: new Date().toISOString(),
+  published: true,  // এটা যোগ করুন যাতে !job.published false হয়
+  slug,  // অতিরিক্ত, যদি দরকার
+};
 
   // 5) S3-এ লেখা
   try {

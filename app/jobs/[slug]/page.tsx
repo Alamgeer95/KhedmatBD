@@ -5,9 +5,35 @@ import Seo from '@/components/Seo';
 import { abs } from '@/utils/abs';
 import CopyLinkButton from '@/components/CopyLinkButton';
 
+type Job = {
+  title: string;
+  description: string;
+  hiringOrganization?: {
+    name?: string;
+    sameAs?: string;
+    logo?: string;
+  };
+  jobLocation?: {
+    addressLocality?: string;
+    addressRegion?: string;
+    addressCountry?: string;
+  };
+  baseSalary?: {
+    value?: number;
+    currency?: string;
+    unitText?: string;
+  };
+  employmentType?: string;
+  validThrough?: string;
+  jdFile?: string; // এটি যোগ করা হলো
+  datePosted?: string;
+  published?: boolean;
+  slug?: string;
+};
+
 export default async function JobDetails({ params }: { params: Promise<{ slug: string }> }) {
   const p = await params;
-  const job = await getJob(p.slug);
+  const job: Job = await getJob(p.slug);
 
   if (!job || !job.published) {
     return (
@@ -151,10 +177,15 @@ export default async function JobDetails({ params }: { params: Promise<{ slug: s
 
             {/* Description */}
             <article className="prose prose-invert mt-6 max-w-none">
-              <div className="p-6 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-lg shadow-black/20 whitespace-pre-wrap">
-                {job.description}
-              </div>
-            </article>
+  <div className="p-6 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-lg shadow-black/20 whitespace-pre-wrap">
+    {job.description}
+    {job.jdFile && (
+      <a href={job.jdFile} target="_blank" rel="noopener noreferrer" className="text-[#b88a4e] hover:underline">
+        জব ডেসক্রিপশন ফাইল ডাউনলোড করুন (PDF/DOC)
+      </a>
+    )}
+  </div>
+</article>
           </div>
 
           {/* Sidebar card — সব স্ক্রিনে দেখা যাবে */}
