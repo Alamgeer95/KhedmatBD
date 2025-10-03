@@ -189,27 +189,14 @@ if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w./?%&=\-]*)?$/i.te
 revalidatePath(`/jobs/${slug}`);
 
   // 7) রিডাইরেক্ট
-  redirect(`/post-job?posted=1`)
-}
-
-// 8)✅ সাকসেস ব্যানার কম্পোনেন্ট
-function SuccessAlert() {
-  return (
-    <div className="mb-4 rounded-lg border border-green-200 bg-green-50 p-3 text-green-800">
-      <strong className="font-medium">সফল!</strong>{" "}
-      আপনার পোস্টটি সফলভাবে সার্ভারে জমা হয়েছে। অতি শীঘ্রই সাইটে প্রদর্শিত হবে।
-    </div>
-  );
-}
+ return { ok: true, message: 'জব সফলভাবে পোস্ট হয়েছে!' };}
 
 
-export default function Page({ searchParams }: { searchParams?: Record<string, string> }) {
-  const posted = searchParams?.posted === '1';
 
+
+export default function Page() {
   return (
     <div className="mx-auto max-w-2xl p-4">
-      {posted && <SuccessAlert />}         {/* 🔹 উপরে সাকসেস মেসেজ */}
-
       <PostJobForm createJobAction={createJobAction} />
     </div>
   );

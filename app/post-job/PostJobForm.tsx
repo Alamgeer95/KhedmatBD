@@ -3,6 +3,16 @@
 import * as React from 'react'
 import { useFormStatus, useFormState } from 'react-dom'
 import { ActionState } from '@/types'
+import Link from "next/link";
+
+function SuccessAlert({ message }: { message?: string }) {
+  return (
+    <div className="mb-4 rounded-lg border border-green-200 bg-green-50 p-3 text-green-800">
+      <strong className="font-medium">সফল!</strong>{" "}
+      {message || 'আপনার পোস্টটি সফলভাবে সার্ভারে জমা হয়েছে। অতি শীঘ্রই সাইটে প্রদর্শিত হবে।'}
+    </div>
+  );
+}
 
 // ---- Client Form (client) ----
 function SubmitBtn() {
@@ -41,6 +51,17 @@ function PostJobForm({ createJobAction }: { createJobAction: (prevState: ActionS
     }
   }, [])
 
+  if (state?.ok) {
+  return (
+    <div className="min-h-screen py-12 px-4 bg-gradient-to-br from-emerald-900/20 to-emerald-500/10">
+      <div className="max-w-6xl mx-auto">
+        <SuccessAlert message={state.message} />
+        <Link href="/jobs" className="text-emerald-600 hover:underline">সব জব দেখুন</Link>
+      </div>
+    </div>
+  );
+}
+  
   return (
     <main className="min-h-screen py-12 px-4 bg-gradient-to-br from-emerald-900/20 to-emerald-500/10">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
