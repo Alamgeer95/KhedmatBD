@@ -47,6 +47,7 @@ export default async function JobDetails({ params }: { params: Promise<{ slug: s
   const canonical = abs(`/jobs/${job.slug}`);
   const ogDynamic = abs(`/api/og/jobs/${job.slug}`);
   const ogImage = ogDynamic || abs('/og/job-default.jpg');
+  console.log('Job data loaded:', job);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -167,11 +168,14 @@ export default async function JobDetails({ params }: { params: Promise<{ slug: s
                     পোস্টেড: {new Date(job.datePosted).toLocaleDateString('bn-BD')}
                   </span>
                 )}
-                {job.validThrough && (
-                  <span className="text-xs px-3 py-1 rounded-full border border-white/15 bg-white/5">
-                    ডেডলাইন: {new Date(job.validThrough).toLocaleDateString('bn-BD')}
-                  </span>
-                )}
+                {job.validThrough && !isNaN(new Date(job.validThrough).getTime()) && (
+  <li className="flex items-start justify-between gap-3">
+    <span>ডেডলাইন</span>
+    <span className="text-[#f0f5ff] font-semibold">
+      {new Date(job.validThrough).toLocaleDateString('bn-BD')}
+    </span>
+  </li>
+)}
               </div>
             </div>
 
@@ -195,15 +199,14 @@ export default async function JobDetails({ params }: { params: Promise<{ slug: s
                 <div className="text-lg font-bold text-[#b88a4e] text-center">খেদমতসামারি</div>
 
                 <ul className="mt-4 space-y-3 text-sm text-[#a1b2d4]">
-                  {job.baseSalary?.value && job.baseSalary?.currency && (
-                    <li className="flex items-start justify-between gap-3">
-                      <span>বেতন</span>
-                      <span className="text-[#f0f5ff] font-semibold">
-                        {job.baseSalary.value} {job.baseSalary.currency}
-                        {job.baseSalary.unitText ? ` / ${job.baseSalary.unitText}` : ''}
-                      </span>
-                    </li>
-                  )}
+                  {job.baseSalary && typeof job.baseSalary.value === 'number' && (
+  <li className="flex items-start justify-between gap-3">
+    <span>সম্মানী</span>
+    <span className="text-[#f0f5ff] font-semibold">
+      {job.baseSalary.value} {job.baseSalary.currency || 'BDT'} / {job.baseSalary.unitText || 'মাস'}
+    </span>
+  </li>
+)}
 
                   {job.employmentType && (
                     <li className="flex items-start justify-between gap-3">
@@ -231,19 +234,19 @@ export default async function JobDetails({ params }: { params: Promise<{ slug: s
                   )}
 
                   {/* ✅ Website row will show if any supported field exists */}
-                  {orgWebsite && (
-                    <li className="flex items-start justify-between gap-3">
-                      <span>ওয়েবসাইট</span>
-                      <a
-                        href={orgWebsite}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#b88a4e] hover:underline break-all text-right"
-                      >
-                        ভিজিট করুন
-                      </a>
-                    </li>
-                  )}
+                  {job.hiringOrganization?.sameAs && (
+  <li className="flex items-start justify-between gap-3">
+    <span>ওয়েবসাইট</span>
+    <a
+      href={job.hiringOrganization.sameAs}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-[#b88a4e] hover:underline break-all text-right"
+    >
+      ভিজিট করুন
+    </a>
+  </li>
+)}
                 </ul>
 
                 <div className="mt-6">
