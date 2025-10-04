@@ -54,12 +54,24 @@ export const dynamic = 'force-dynamic'
 
 // ---------- ছোট util ----------
 function slugifyOrg(input: string) {
+  // বাংলা থেকে ইংরেজি transliterate (সিম্পল ম্যাপিং)
+  const transliterateMap: { [key: string]: string } = {
+    'অ': 'a', 'আ': 'a', 'ই': 'i', 'ঈ': 'i', 'উ': 'u', 'ঊ': 'u', 'ঋ': 'ri', 'এ': 'e', 'ঐ': 'oi', 'ও': 'o', 'ঔ': 'ou',
+    'ক': 'k', 'খ': 'kh', 'গ': 'g', 'ঘ': 'gh', 'ঙ': 'ng', 'চ': 'ch', 'ছ': 'chh', 'জ': 'j', 'ঝ': 'jh', 'ঞ': 'ny',
+    'ট': 't', 'ঠ': 'th', 'ড': 'd', 'ঢ': 'dh', 'ণ': 'n', 'ত': 't', 'থ': 'th', 'দ': 'd', 'ধ': 'dh', 'ন': 'n',
+    'প': 'p', 'ফ': 'ph', 'ব': 'b', 'ভ': 'bh', 'ম': 'm', 'য': 'y', 'র': 'r', 'ল': 'l', 'শ': 'sh', 'ষ': 'sh',
+    'স': 's', 'হ': 'h', 'ড়': 'r', 'ঢ়': 'rh', 'য়': 'y', 'ং': 'ng', 'ঃ': 'h', '়': '',
+    // স্বরবর্ণ যোগ করুন যদি লাগে
+  };
   return input
+    .split('')
+    .map(char => transliterateMap[char] || char)
+    .join('')
     .toLowerCase()
     .trim()
     .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9\u0980-\u09FF-]/g, '') // বাংলা সাপোর্ট যোগ
-    .slice(0, 60) || 'default-job'; // খালি হলে ডিফল্ট
+    .replace(/[^a-z0-9-]/g, '') // শুধু ইংরেজি + -
+    .slice(0, 60) || 'default-job';
 }
 
 function extFromMime(mime?: string) {
@@ -123,7 +135,10 @@ if (applicationUrl && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w./?%&=\-]*)?$/i.te
     const finalKey = ext ? `${key}${ext}` : key
     const arrayBuffer = await f.arrayBuffer()
     const res = await putFile(finalKey, arrayBuffer, { contentType: f.type || 'application/octet-stream' })
-    return res.url
+    const bucketName = 'khedmatbd'; // আপনার bucket name
+    const accountId = '864e82a3a4b66186c1b2c8ce90707882'; // আপনার account ID (স্ক্রিনশট থেকে)
+    const fullUrl = `https://${bucketName}.${accountId}.r2.cloudflarestorage.com/${finalKey}`;
+    return fullUrl;
   }
 
   try {
